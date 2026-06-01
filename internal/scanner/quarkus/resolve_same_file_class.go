@@ -14,6 +14,7 @@ func resolveSameFileClass(referrerPath, className, projectRoot string) string {
 		return ""
 	}
 	classes := findAllByType(root, "class_declaration")
+	classes = append(classes, findAllByType(root, "interface_declaration")...)
 	for _, cls := range classes {
 		nameNode := findChildByType(cls, "identifier")
 		if nameNode != nil && nodeText(nameNode, src) == className {

@@ -6,8 +6,9 @@ package laravel
 // and modular package providers (*ServiceProvider.php, e.g. under packages/**/
 // src/Providers/) for split route files loaded via
 // Route::...->group(base_path('routes/X.php')), Route::...->group(__DIR__ .
-// '/../Routes/X.php'), or require/require_once base_path('routes/X.php'),
-// returning each loaded file with the prefix/middleware the provider applies.
+// '/../Routes/X.php'), $this->loadRoutesFrom(__DIR__ . '/../Routes/X.php'), or
+// require/require_once base_path('routes/X.php'), returning each loaded file
+// with the prefix/middleware the provider applies.
 // Refs are deduped by relPath (first occurrence wins) so a file loaded twice is
 // collected once.
 func providerRouteFiles(parsedFiles map[string]*fileInfo) []routeFileRef {
@@ -27,6 +28,8 @@ func providerRouteFiles(parsedFiles map[string]*fileInfo) []routeFileRef {
 		for _, mc := range findAllByType(fi.root, "member_call_expression") {
 			ref, ok := groupLoadedRouteFile(mc, *fi)
 			add(ref, ok)
+			lref, lok := loadRoutesFromFile(mc, *fi)
+			add(lref, lok)
 		}
 		for _, sc := range findAllByType(fi.root, "scoped_call_expression") {
 			ref, ok := scopedLoadedRouteFile(sc, *fi)

@@ -38,5 +38,14 @@ func resolveConstantValue(constRef string, imports map[string]string, referrerPa
 	}
 
 	classes := findAllByType(root, "class_declaration")
-	return lookupStaticFinalInClasses(classes, src, className, fieldName, fileImports, filePath, projectRoot)
+	classes = append(classes, findAllByType(root, "interface_declaration")...)
+	val := lookupStaticFinalInClasses(classes, src, className, fieldName, fileImports, filePath, projectRoot)
+	if val != "" {
+		return val
+	}
+	// 바인딩 없는 단순 식별자(className=="")는 상속 체인(extends/implements)의 상수일 수 있다.
+	if className == "" {
+		return resolveInheritedConstant(classes, src, fieldName, fileImports, filePath, projectRoot, map[string]bool{filePath: true})
+	}
+	return ""
 }

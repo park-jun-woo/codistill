@@ -1,5 +1,5 @@
 //ff:func feature=scan type=extract control=selection topic=laravel
-//ff:what relPath가 라우트 추출에 필요한 소스 파일(routes/**, app/Providers/**, *ServiceProvider.php, **/Routes/**)인지 판정한다
+//ff:what relPath가 라우트 추출에 필요한 소스 파일(routes/**, app/Providers/**, *ServiceProvider.php, **/Routes/**, **/Http/routes.php)인지 판정한다
 package laravel
 
 import "strings"
@@ -20,6 +20,8 @@ func isRouteSourceFile(relPath string) bool {
 	case strings.HasSuffix(p, "ServiceProvider.php"):
 		return true
 	case strings.Contains(p, "/Routes/"):
+		return true
+	case strings.HasSuffix(p, "/Http/routes.php"):
 		return true
 	default:
 		return false
