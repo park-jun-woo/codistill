@@ -16,7 +16,7 @@ func TestBuildControllerEndpoints_Basic(t *testing.T) {
 		},
 		absFile: "/src/users.controller.ts",
 	}
-	eps, reqs := buildControllerEndpoints("api", false, cwf, "", 0)
+	eps, reqs := buildControllerEndpoints("api", false, "", cwf, "", 0)
 	if len(eps) != 2 {
 		t.Fatalf("expected 2 endpoints, got %d", len(eps))
 	}

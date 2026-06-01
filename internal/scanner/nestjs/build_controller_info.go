@@ -14,9 +14,7 @@ func buildControllerInfo(cls *sitter.Node, src []byte, file string, absFile stri
 		return controllerInfo{}, false
 	}
 	pc := enumPathCtx{root: root, src: src, absFile: absFile, imports: imports, projectRoot: projectRoot}
-	if resolved, ok := resolveEnumPathArg(prefix, root, src, absFile, imports, projectRoot); ok {
-		prefix = resolved
-	}
+	prefix = pc.resolve(prefix)
 	ci := controllerInfo{
 		prefix:  prefix,
 		version: controllerVersion(cls, src),

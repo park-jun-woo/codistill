@@ -11,6 +11,7 @@ func processServiceArg(callExpr *sitter.Node, src []byte, prefix string, routes 
 	case "web::scope":
 		scopePrefix := extractScopePrefix(callExpr, src)
 		collectServiceCalls(callExpr, src, joinPath(prefix, scopePrefix), routes, handlerFuncs, visited)
+		collectRouteCalls(callExpr, src, joinPath(prefix, scopePrefix), routes)
 	case "web::resource":
 		resourcePath := extractResourcePath(callExpr, src)
 		fullPath := joinPath(prefix, resourcePath)

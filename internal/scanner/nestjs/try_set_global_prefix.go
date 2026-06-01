@@ -4,8 +4,15 @@ package nestjs
 
 import sitter "github.com/smacker/go-tree-sitter"
 
-// trySetGlobalPrefix checks if a call_expression is setGlobalPrefix and returns the prefix.
-func trySetGlobalPrefix(call *sitter.Node, src []byte) (string, bool) {
+// trySetGlobalPrefix checks if a call_expression is setGlobalPrefix and returns
+// the prefix. A direct string literal arg is read by firstStringArg; when that
+// fails it resolves an identifier arg to a same-file const string
+// (resolveSetPrefixIdentifier) or extracts the literal portion of a
+// concatenation (extractBinaryLiteralPrefix), e.g. globalPrefix → 'api' or
+// urlPrefix + 'api' → 'api'. astRoot is the parsed AST of the call's file,
+// used for same-file const resolution. Non-resolvable args yield ("", false)
+// so callers keep the Phase044 .env/config fallback.
+func trySetGlobalPrefix(call *sitter.Node, astRoot *sitter.Node, src []byte) (string, bool) {
 	memberAccess := findChildByType(call, "member_expression")
 	if memberAccess == nil {
 		return "", false
@@ -18,5 +25,11 @@ func trySetGlobalPrefix(call *sitter.Node, src []byte) (string, bool) {
 	if args == nil {
 		return "", false
 	}
-	return firstStringArg(args, src)
+	if prefix, ok := firstStringArg(args, src); ok {
+		return prefix, true
+	}
+	if prefix, ok := resolveSetPrefixIdentifier(args, astRoot, src); ok {
+		return prefix, true
+	}
+	return extractBinaryLiteralPrefix(args, astRoot, src)
 }

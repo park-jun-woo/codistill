@@ -6,7 +6,7 @@ import "testing"
 
 func TestBuildControllerEndpoints_Empty(t *testing.T) {
 	cwf := controllerWithFile{info: controllerInfo{prefix: "x"}}
-	eps, reqs := buildControllerEndpoints("", false, cwf, "", 0)
+	eps, reqs := buildControllerEndpoints("", false, "", cwf, "", 0)
 	if len(eps) != 0 || len(reqs) != 0 {
 		t.Fatal("expected empty")
 	}

@@ -9,11 +9,11 @@ import (
 )
 
 // extractOneResponse extracts response info from a single return statement.
-func extractOneResponse(absRoot string, retNode *sitter.Node, src []byte, parsedFiles map[string]*fileInfo) *scanner.Response {
-	if resp := tryResourceResponse(absRoot, retNode, src, parsedFiles); resp != nil {
+func extractOneResponse(absRoot string, retNode *sitter.Node, src []byte, srcFI *fileInfo, parsedFiles map[string]*fileInfo) *scanner.Response {
+	if resp := tryResourceResponse(absRoot, retNode, src, srcFI, parsedFiles); resp != nil {
 		return resp
 	}
-	if resp := tryCollectionResponse(absRoot, retNode, src, parsedFiles); resp != nil {
+	if resp := tryCollectionResponse(absRoot, retNode, src, srcFI, parsedFiles); resp != nil {
 		return resp
 	}
 	text := nodeText(retNode, src)

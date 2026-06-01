@@ -15,7 +15,7 @@ func TestExtractOneRoute(t *testing.T) {
 		t.Fatal("no decorated_definition")
 	}
 	prefixes := map[string]string{"router": "/api"}
-	ri := extractOneRoute(defs[0], src, prefixes, nil, "main.py", nil)
+	ri := extractOneRoute(defs[0], src, prefixes, nil, nil, "main.py", nil)
 	if ri == nil {
 		t.Fatal("expected route info")
 	}
@@ -30,7 +30,7 @@ func TestExtractOneRoute(t *testing.T) {
 	root2, _ := parsePython(src2)
 	defs2 := findAllByType(root2, "decorated_definition")
 	if len(defs2) > 0 {
-		ri2 := extractOneRoute(defs2[0], src2, nil, nil, "x.py", nil)
+		ri2 := extractOneRoute(defs2[0], src2, nil, nil, nil, "x.py", nil)
 		if ri2 != nil {
 			t.Fatal("expected nil for non-route decorator")
 		}

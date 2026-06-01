@@ -18,6 +18,7 @@ func parseViewSetClass(classNode *sitter.Node, fi fileInfo, idx classIndex) *vie
 	vs := &viewsetInfo{
 		name:    nodeText(nameNode, fi.src),
 		parents: parents,
+		methods: resolveMethodsTransitive(parents, idx),
 		file:    fi.relPath,
 		line:    int(nameNode.StartPoint().Row) + 1,
 	}

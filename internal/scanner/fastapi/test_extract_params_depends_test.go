@@ -18,8 +18,8 @@ async def protected(current_user: str = Depends(get_current_user)):
 	if err != nil {
 		t.Fatal(err)
 	}
-	prefixes := resolveRouterPrefixes(root, src)
-	routes := extractRoutes(root, src, prefixes, nil, "main.py", nil)
+	prefixes := resolveRouterPrefixes(root, src, nil)
+	routes := extractRoutes(root, src, prefixes, nil, nil, "main.py", nil)
 
 	if len(routes) != 1 {
 		t.Fatalf("expected 1 route, got %d", len(routes))

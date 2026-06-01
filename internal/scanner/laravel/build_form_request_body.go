@@ -7,7 +7,7 @@ import (
 )
 
 func buildFormRequestBody(absRoot string, cm *controllerMethod, parsedFiles map[string]*fileInfo) *scanner.Body {
-	fields := extractFormRequest(absRoot, cm.formRequestRef, parsedFiles)
+	fields := extractFormRequest(absRoot, cm.formRequestRef, cm.srcFI, parsedFiles)
 	if len(fields) == 0 {
 		return nil
 	}

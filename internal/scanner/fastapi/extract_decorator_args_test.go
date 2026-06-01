@@ -15,24 +15,30 @@ func TestExtractDecoratorArgs(t *testing.T) {
 		t.Fatal("no decorator")
 	}
 	callNode := findChildByType(decs[0], "call")
-	path, status, respModel, respClass := extractDecoratorArgs(callNode, src)
-	if path != "/users" {
-		t.Fatalf("path: got %q", path)
+	da := extractDecoratorArgs(callNode, src)
+	if da.path != "/users" {
+		t.Fatalf("path: got %q", da.path)
 	}
-	if status != 201 {
-		t.Fatalf("status: got %d", status)
+	if da.statusCode != 201 {
+		t.Fatalf("status: got %d", da.statusCode)
 	}
-	if respModel != "UserOut" {
-		t.Fatalf("respModel: got %q", respModel)
+	if da.responseModel != "UserOut" {
+		t.Fatalf("respModel: got %q", da.responseModel)
 	}
-	if respClass != "" {
-		t.Fatalf("respClass: got %q", respClass)
+	if da.responseClass != "" {
+		t.Fatalf("respClass: got %q", da.responseClass)
+	}
+	if !da.includeInSchema {
+		t.Fatal("includeInSchema: expected true by default")
 	}
 
 	// nil callNode
-	p, s, r, rc := extractDecoratorArgs(nil, src)
-	if p != "" || s != 0 || r != "" || rc != "" {
+	da0 := extractDecoratorArgs(nil, src)
+	if da0.path != "" || da0.statusCode != 0 || da0.responseModel != "" || da0.responseClass != "" {
 		t.Fatal("expected empty for nil")
+	}
+	if !da0.includeInSchema {
+		t.Fatal("includeInSchema: expected true for nil")
 	}
 
 	// decorator without argument_list (bare attribute access)
@@ -47,8 +53,8 @@ func TestExtractDecoratorArgs(t *testing.T) {
 	}
 	// The decorator's child is an attribute, not a call node; pass it directly
 	attr := findChildByType(decs2[0], "attribute")
-	p2, s2, r2, rc2 := extractDecoratorArgs(attr, src2)
-	if p2 != "" || s2 != 0 || r2 != "" || rc2 != "" {
+	da2 := extractDecoratorArgs(attr, src2)
+	if da2.path != "" || da2.statusCode != 0 || da2.responseModel != "" || da2.responseClass != "" {
 		t.Fatal("expected empty for non-call decorator")
 	}
 }

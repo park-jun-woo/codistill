@@ -11,7 +11,7 @@ func TestBuildEndpoint_AuthEmpty(t *testing.T) {
 		path:    "status",
 		handler: "getStatus",
 	}
-	result := buildEndpoint("", false, ci, ep)
+	result := buildEndpoint("", false, "", ci, ep)
 	if result.AuthLevel != "" {
 		t.Fatalf("expected empty AuthLevel, got %q", result.AuthLevel)
 	}

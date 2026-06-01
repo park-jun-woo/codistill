@@ -14,7 +14,7 @@ func TestTrySetGlobalPrefix_Match(t *testing.T) {
 	if len(calls) == 0 {
 		t.Fatal("no calls found")
 	}
-	prefix, ok := trySetGlobalPrefix(calls[0], src)
+	prefix, ok := trySetGlobalPrefix(calls[0], root, src)
 	if !ok || prefix != "api" {
 		t.Fatalf("expected api, got %q ok=%v", prefix, ok)
 	}

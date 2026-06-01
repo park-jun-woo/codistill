@@ -7,13 +7,17 @@ import (
 )
 
 func appendRouteFromArgs(args *sitter.Node, src []byte, resourcePath string, routes *[]builderRoute) {
-	method, handler := parseRouteArg(args, src)
+	method, handler, pathOverride := parseRouteArg(args, src)
 	if method == "" {
 		return
 	}
+	path := resourcePath
+	if pathOverride != "" {
+		path = joinPath(resourcePath, pathOverride)
+	}
 	*routes = append(*routes, builderRoute{
 		method:  method,
-		path:    resourcePath,
-		handler: handlerOrAnon(handler, method, resourcePath),
+		path:    path,
+		handler: handlerOrAnon(handler, method, path),
 	})
 }

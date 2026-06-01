@@ -5,7 +5,7 @@ package django
 import "testing"
 
 func TestBuildSingleURLEntry_EmptyView(t *testing.T) {
-	eps := buildSingleURLEntryEndpoints(urlEntry{viewName: ""}, nil, nil, nil, nil)
+	eps := buildSingleURLEntryEndpoints(urlEntry{viewName: ""}, nil, nil, nil, nil, nil)
 	if eps != nil {
 		t.Fatalf("expected nil for empty view name, got %+v", eps)
 	}

@@ -9,7 +9,7 @@ func extractOneRoute(call *sitter.Node, src []byte, instances map[string]bool) *
 	if fn == nil {
 		return nil
 	}
-	obj := findChildByType(fn, "identifier")
+	obj := routeReceiverIdent(fn)
 	if obj == nil || !instances[nodeText(obj, src)] {
 		return nil
 	}

@@ -20,4 +20,17 @@ func TestExtractURLParams(t *testing.T) {
 	if len(rePathParams) != 1 || rePathParams[0].name != "year" {
 		t.Fatalf("expected re_path named group year, got %+v", rePathParams)
 	}
+
+	// Phase163: unnamed capture groups become positional {paramN} params,
+	// matching the names djangoURLToOpenAPI synthesizes.
+	unnamed := extractURLParams("^(\\d+)/(.*)")
+	if len(unnamed) != 2 || unnamed[0].name != "param1" || unnamed[1].name != "param2" {
+		t.Fatalf("expected positional param1/param2, got %+v", unnamed)
+	}
+
+	// Pure literal with escape/anchor yields no params.
+	none := extractURLParams("^\\.well-known/jwks.json")
+	if len(none) != 0 {
+		t.Fatalf("expected no params for literal path, got %+v", none)
+	}
 }

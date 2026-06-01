@@ -10,7 +10,7 @@ func collectEndpoints(files []fileInfo) ([]scanner.Endpoint, []modelRequest) {
 	var endpoints []scanner.Endpoint
 	var modelReqs []modelRequest
 	for _, fi := range files {
-		routes := extractRoutes(fi.root, fi.src, fi.prefixes, fi.routerDeps, fi.relPath, aliasMap)
+		routes := extractRoutes(fi.root, fi.src, fi.prefixes, fi.routerDeps, fi.hidden, fi.relPath, aliasMap)
 		for _, ri := range routes {
 			epIdx := len(endpoints)
 			endpoints = append(endpoints, buildEndpoint(ri))

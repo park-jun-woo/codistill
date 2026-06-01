@@ -11,7 +11,7 @@ func TestBuildURLEntryEndpoints(t *testing.T) {
 		},
 	}
 	funcViews := []funcViewInfo{{name: "health", methods: []string{"GET"}, file: "v.py"}}
-	eps := buildURLEntryEndpoints(byModule, nil, nil, funcViews, map[string]serializerInfo{})
+	eps := buildURLEntryEndpoints(byModule, nil, nil, funcViews, map[string]serializerInfo{}, nil)
 	if len(eps) == 0 {
 		t.Fatal("expected endpoints from URL entries")
 	}

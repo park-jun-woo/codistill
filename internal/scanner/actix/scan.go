@@ -31,7 +31,9 @@ func Scan(root string) (*scanner.ScanResult, error) {
 	fieldCache := make(map[string][]scanner.Field)
 	handlerFuncs := make(map[string]*handlerInfo)
 
-	endpoints := scanMacroEndpoints(files, sIdx, fieldCache, handlerFuncs)
+	registeredHandlers := collectRegisteredHandlers(files)
+
+	endpoints := scanMacroEndpoints(files, sIdx, fieldCache, handlerFuncs, registeredHandlers)
 	endpoints = append(endpoints, scanBuilderEndpoints(files, sIdx, fieldCache, handlerFuncs)...)
 	applyScopePrefixes(files, endpoints)
 

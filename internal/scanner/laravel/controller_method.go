@@ -14,4 +14,5 @@ type controllerMethod struct {
 	returnNodes    []*sitter.Node // return statement nodes
 	methodNode     *sitter.Node   // method_declaration node for body-level scans
 	src            []byte
+	srcFI          *fileInfo // controller file (carries use-imports for FormRequest/Resource PSR-4 resolution)
 }

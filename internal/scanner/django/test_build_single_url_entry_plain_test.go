@@ -7,7 +7,7 @@ import "testing"
 func TestBuildSingleURLEntry_Plain(t *testing.T) {
 
 	entry := urlEntry{pattern: "misc/", viewName: "UnknownView"}
-	eps := buildSingleURLEntryEndpoints(entry, nil, nil, nil, map[string]serializerInfo{})
+	eps := buildSingleURLEntryEndpoints(entry, nil, nil, nil, map[string]serializerInfo{}, nil)
 	if len(eps) == 0 {
 		t.Fatal("expected plain endpoints fallback")
 	}

@@ -7,8 +7,8 @@ import (
 )
 
 // extractResourceFields finds a JsonResource class and extracts field names from toArray().
-func extractResourceFields(absRoot, className string, parsedFiles map[string]*fileInfo) []scanner.Field {
-	fi := findResourceFile(absRoot, className, parsedFiles)
+func extractResourceFields(absRoot, className string, srcFI *fileInfo, parsedFiles map[string]*fileInfo) []scanner.Field {
+	fi := findResourceFile(absRoot, className, srcFI, parsedFiles)
 	if fi == nil {
 		return nil
 	}

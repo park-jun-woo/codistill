@@ -31,6 +31,8 @@ func Scan(root string) (*scanner.ScanResult, error) {
 	}
 
 	bpPrefixes := resolveBlueprintPrefixes(files)
+	nsPrefixes := collectNamespacePrefix(files)
+	catalog := collectResourceClasses(files)
 
 	var endpoints []scanner.Endpoint
 	for _, fi := range files {
@@ -38,6 +40,27 @@ func Scan(root string) (*scanner.ScanResult, error) {
 		for _, ri := range routes {
 			endpoints = append(endpoints, buildEndpoint(ri))
 		}
+	}
+
+	// Flask-RESTful class-based routes (api.add_resource / configure_api tuples).
+	for _, ri := range extractResourceRoutes(files, catalog, bpPrefixes, nsPrefixes) {
+		endpoints = append(endpoints, buildEndpoint(ri))
+	}
+
+	// flask_restx class-based routes (@ns.route on Resource subclasses).
+	for _, ri := range extractClassRoutes(files, nsPrefixes) {
+		endpoints = append(endpoints, buildEndpoint(ri))
+	}
+
+	// Flask-AppBuilder API routes (@expose + ModelRestApi CRUD on BaseApi/*RestApi).
+	for _, ri := range extractAppbuilderRoutes(files) {
+		endpoints = append(endpoints, buildEndpoint(ri))
+	}
+
+	// add_url_rule(rule, endpoint, view, methods=...) registrations
+	// (Indico IndicoBlueprint + standard Flask function views).
+	for _, ri := range extractAddURLRuleRoutes(files, bpPrefixes) {
+		endpoints = append(endpoints, buildEndpoint(ri))
 	}
 
 	return &scanner.ScanResult{Endpoints: endpoints}, nil

@@ -8,4 +8,5 @@ type includeCall struct {
 	childVar    string // e.g., "router" (attribute이면 변수 부분만)
 	childModule string // e.g., "items" (attribute이면 모듈 부분, 단순 identifier이면 "")
 	extraPrefix string // prefix kwarg from include_router call
+	hidden      bool   // true if include_router(..., include_in_schema=False)
 }

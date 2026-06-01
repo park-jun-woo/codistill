@@ -27,5 +27,6 @@ func resolveAbsoluteImportPath(absRoot, module string) string {
 	if _, err := os.Stat(initFile); err == nil {
 		return initFile
 	}
-	return ""
+	// 스캔 루트와 import(패키지) 루트가 다를 때(subpath 스캔) 조상 탐색으로 보강.
+	return resolveAbsoluteImportAncestor(absRoot, module)
 }

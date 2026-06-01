@@ -3,6 +3,9 @@
 package scanner
 
 import (
+	"fmt"
+	"os"
+
 	"gopkg.in/yaml.v3"
 )
 
@@ -13,6 +16,10 @@ func buildSpecNode(result *ScanResult) *yaml.Node {
 		schemas[name] = sch
 	}
 	paths := map[string]map[string]any{}
+	// incumbent — paths와 평행하게 각 (path,method)에 현재 보존된 Endpoint를 추적해
+	// assignOperationToPaths가 충돌 시 preferEndpoint 비교를 할 수 있게 한다.
+	incumbent := map[string]map[string]Endpoint{}
+	var conflicts []pathConflict
 
 	deduplicated := DeduplicateEndpoints(result.Endpoints)
 	confirmedIDs := deduplicateOperationIDs(deduplicated)
@@ -27,7 +34,12 @@ func buildSpecNode(result *ScanResult) *yaml.Node {
 		if cid, ok := confirmedIDs[i]; ok {
 			op["operationId"] = cid
 		}
-		assignOperationToPaths(paths, oaPath, ep, op)
+		conflicts = append(conflicts, assignOperationToPaths(paths, incumbent, oaPath, ep, op)...)
+	}
+
+	// 손실 가시화: 충돌을 그때그때 흘리는 대신 스캔 종료 시 요약 리포트로 한 번에 집계.
+	if report := formatPathConflictReport(conflicts); report != "" {
+		fmt.Fprint(os.Stderr, report)
 	}
 
 	// 키 순서: openapi → info → paths → components

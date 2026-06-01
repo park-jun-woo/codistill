@@ -8,4 +8,6 @@ type routerRegistration struct {
 	viewsetName  string
 	basename     string
 	routerPrefix string // prefix from include() if any
+	routerVar    string // the router variable name, e.g. "router" in router.register(...)
+	module       string // dotted module path where the register() call lives
 }

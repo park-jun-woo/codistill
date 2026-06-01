@@ -14,7 +14,7 @@ func buildResourceInfo(cls *sitter.Node, fi *fileInfo) resourceInfo {
 	if nameNode != nil {
 		ri.className = nodeText(nameNode, fi.src)
 	}
-	ri.prefix = extractClassPath(cls, fi.src)
+	ri.prefix = extractClassPath(cls, fi)
 	ri.roles = extractClassRoles(cls, fi.src)
 	ri.endpoints = extractMethodEndpoints(cls, fi)
 	return ri

@@ -10,7 +10,7 @@ func TestFindRouterAssignments(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	routers := findRouterAssignments(root, src)
+	routers := findRouterAssignments(root, src, nil)
 	if len(routers) < 1 {
 		t.Fatalf("expected at least 1 router, got %d", len(routers))
 	}

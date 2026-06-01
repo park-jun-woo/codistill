@@ -9,7 +9,7 @@ func TestTryCollectionResponse(t *testing.T) {
 		return UserResource::collection($users);
 	} }`)
 	ret := findAllByType(fi.root, "return_statement")[0]
-	resp := tryCollectionResponse(t.TempDir(), ret, fi.src, map[string]*fileInfo{})
+	resp := tryCollectionResponse(t.TempDir(), ret, fi.src, nil, map[string]*fileInfo{})
 	if resp == nil || resp.TypeName != "[]UserResource" {
 		t.Fatalf("got %+v", resp)
 	}

@@ -6,7 +6,7 @@ import "github.com/park-jun-woo/codistill/internal/scanner"
 
 // buildControllerEndpoints builds endpoints for a single controller.
 // baseIdx is the current length of the global endpoints slice for correct DTO indexing.
-func buildControllerEndpoints(globalPrefix string, uriVersioning bool, cwf controllerWithFile, projectRoot string, baseIdx int) ([]scanner.Endpoint, []dtoRequest) {
+func buildControllerEndpoints(globalPrefix string, uriVersioning bool, defaultVersion string, cwf controllerWithFile, projectRoot string, baseIdx int) ([]scanner.Endpoint, []dtoRequest) {
 	ci := cwf.info
 	var endpoints []scanner.Endpoint
 	var dtoReqs []dtoRequest
@@ -20,7 +20,7 @@ func buildControllerEndpoints(globalPrefix string, uriVersioning bool, cwf contr
 		for _, p := range pathList {
 			epCopy := ep
 			epCopy.path = p
-			endpoint := buildEndpoint(globalPrefix, uriVersioning, ci, epCopy)
+			endpoint := buildEndpoint(globalPrefix, uriVersioning, defaultVersion, ci, epCopy)
 			// Recompute epIdx per cloned endpoint so DTO matching stays aligned.
 			epIdx := baseIdx + len(endpoints)
 			reqs := collectDTORequests(epCopy, ci.imports, cwf.absFile, projectRoot, epIdx)

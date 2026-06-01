@@ -15,6 +15,7 @@ const (
 	AnnFormParam    = "FormParam"
 	AnnRestForm     = "RestForm"
 	AnnBeanParam    = "BeanParam"
+	AnnContext      = "Context"
 	AnnDefaultValue = "DefaultValue"
 	AnnConsumes     = "Consumes"
 	AnnProduces     = "Produces"
@@ -57,6 +58,28 @@ var primitiveTypes = map[string]bool{
 	"double": true, "Double": true, "boolean": true, "Boolean": true,
 	"byte": true, "Byte": true, "short": true, "Short": true,
 	"char": true, "Character": true,
+}
+
+// injectedParamTypes는 JAX-RS/서블릿 프레임워크 주입 객체 타입 set이다.
+// 이 타입들은 요청 본문이 아니라 컨테이너가 주입하는 객체이므로
+// requestBody 후보에서 배제한다(어노테이션 누락 대비 안전망).
+var injectedParamTypes = map[string]bool{
+	"HttpServletRequest":      true,
+	"HttpServletResponse":     true,
+	"UriInfo":                 true,
+	"SecurityContext":         true,
+	"Request":                 true,
+	"HttpHeaders":             true,
+	"SseEventSink":            true,
+	"Sse":                     true,
+	"AsyncResponse":           true,
+	"ContainerRequestContext": true,
+	"ResourceContext":         true,
+	"Configuration":           true,
+	"Application":             true,
+	"Providers":               true,
+	"ServletContext":          true,
+	"ServletConfig":           true,
 }
 
 var responseStatusMethods = map[string]string{

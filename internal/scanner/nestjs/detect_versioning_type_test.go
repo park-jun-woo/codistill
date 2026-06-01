@@ -16,7 +16,7 @@ async function bootstrap() {
 bootstrap();
 `
 	writeFile(t, dir, "src/main.ts", mainTs)
-	if !detectURIVersioning(dir) {
+	if enabled, _ := detectURIVersioning(dir); !enabled {
 		t.Fatal("expected URI versioning to be detected")
 	}
 }

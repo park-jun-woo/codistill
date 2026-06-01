@@ -20,7 +20,7 @@ func scanOneFilePass1(path string, parsed map[string]*fileInfo, allRouters map[s
 		schemaSrc[name] = fi.Src
 	}
 	imports := resolveImports(fi, absRoot, aliases)
-	mounts := resolveUsePrefixes(fi, routers, imports)
+	mounts := resolveUsePrefixes(fi, routers, imports, absRoot, aliases)
 	var entries []mountEntry
 	for _, m := range mounts {
 		entries = append(entries, mountEntry{

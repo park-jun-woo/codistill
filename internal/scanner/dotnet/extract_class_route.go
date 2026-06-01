@@ -13,5 +13,10 @@ func extractClassRoute(cls *sitter.Node, src []byte, className string) string {
 	if route == "" {
 		return ""
 	}
-	return expandRouteTokens(route, className, "")
+	expanded := expandRouteTokens(route, className, "")
+	// 클래스-레벨 [Route("~/...")] / [Route("/...")] 는 앱 루트 기준 절대 prefix이므로
+	// 선두 절대 마커(~/·/)를 제거한다. joinPath 는 / 만 trim 하므로 ~ 가 리터럴
+	// 세그먼트로 남는 것을 방지한다. (상대 prefix 는 마커가 없어 그대로 통과)
+	stripped, _ := isAbsoluteRoute(expanded)
+	return stripped
 }

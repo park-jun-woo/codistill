@@ -9,4 +9,8 @@ type schemaInfo struct {
 	Querystring *sitter.Node
 	Params      *sitter.Node
 	Response    map[string]*sitter.Node
+	OperationID string
+	Summary     string
+	Description string
+	Tags        []string
 }

@@ -7,8 +7,8 @@ import (
 )
 
 // extractFormRequest finds a FormRequest class and extracts fields from its rules() method.
-func extractFormRequest(absRoot, className string, parsedFiles map[string]*fileInfo) []scanner.Field {
-	fi := findFormRequestFile(absRoot, className, parsedFiles)
+func extractFormRequest(absRoot, className string, srcFI *fileInfo, parsedFiles map[string]*fileInfo) []scanner.Field {
+	fi := findFormRequestFile(absRoot, className, srcFI, parsedFiles)
 	if fi == nil {
 		return nil
 	}

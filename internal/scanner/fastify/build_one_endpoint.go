@@ -15,6 +15,14 @@ func buildOneEndpoint(method, oaPath string, r routeInfo, relPath string, pathPa
 		File:    relPath,
 		Line:    r.Line,
 	}
+	if r.Schema != nil {
+		if si := extractJSONSchema(r.Schema, src); si != nil {
+			ep.OperationID = si.OperationID
+			ep.Summary = si.Summary
+			ep.Description = si.Description
+			ep.Tags = si.Tags
+		}
+	}
 	req, hasReq := buildRequest(r, pathParams, src, vars)
 	if hasReq {
 		ep.Request = &req

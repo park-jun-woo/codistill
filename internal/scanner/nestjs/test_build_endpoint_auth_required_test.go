@@ -12,7 +12,7 @@ func TestBuildEndpoint_AuthRequired(t *testing.T) {
 		handler:   "getMe",
 		authLevel: "auth_required",
 	}
-	result := buildEndpoint("api", false, ci, ep)
+	result := buildEndpoint("api", false, "", ci, ep)
 	if result.AuthLevel != "auth_required" {
 		t.Fatalf("expected AuthLevel=auth_required, got %q", result.AuthLevel)
 	}

@@ -25,7 +25,11 @@ func mergeSingleInclude(fi *fileInfo, inc includeCall, importMap map[string]stri
 		return
 	}
 
-	childPrefix := srcPrefixes[childVar]
+	childKey := resolveImportOrigName(fi.imports, childVar)
+	childPrefix, ok := srcPrefixes[childKey]
+	if !ok {
+		childPrefix = srcPrefixes[childVar]
+	}
 	parentPrefix := fi.prefixes[inc.parentVar]
 	extra := resolveIfVariable(fi.root, inc.extraPrefix, fi.src)
 	merged := joinPath(parentPrefix, extra, childPrefix)

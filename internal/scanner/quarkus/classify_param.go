@@ -21,6 +21,8 @@ func classifyParam(param *sitter.Node, src []byte, ep *endpointInfo, imports map
 		classifyRestForm(param, src, ep, typeName, paramName)
 	case hasAnnotation(param, src, AnnBeanParam):
 		ep.formType = typeName
+	case hasAnnotation(param, src, AnnContext):
+		// @Context 주입 객체(HttpServletRequest, UriInfo 등)는 요청 본문이 아니므로 무시한다.
 	default:
 		classifyBodyParam(typeName, paramName, ep)
 	}

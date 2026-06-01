@@ -1,15 +1,11 @@
 //ff:func feature=scan type=convert control=sequence topic=django
-//ff:what Django URL 패턴의 <type:name> 및 re_path (?P<name>..)를 OpenAPI {name}로 변환한다
+//ff:what Django URL 패턴의 <type:name>·re_path 정규식(앵커/캡처그룹/문자클래스)을 OpenAPI {name}로 완전 정규화한다
 package django
 
-import "strings"
-
 // djangoURLToOpenAPI converts Django URL patterns to OpenAPI path format.
-// e.g. "users/<int:pk>/" -> "users/{pk}/"; re_path "^articles/(?P<year>[0-9]+)/$" -> "articles/{year}/".
+// e.g. "users/<int:pk>/" -> "users/{pk}/"; re_path "^articles/(?P<year>[0-9]+)/$" -> "articles/{year}/";
+// unnamed groups "^(\d+)/(.*)" -> "{param1}/{param2}"; escapes "^\.well-known/" -> ".well-known/".
 func djangoURLToOpenAPI(path string) string {
-	path = djangoRePathNamedRe.ReplaceAllString(path, "{$1}")
-	path = djangoParamRe.ReplaceAllString(path, "{$2}")
-	path = strings.TrimPrefix(path, "^")
-	path = strings.TrimSuffix(path, "$")
-	return path
+	normalized, _ := normalizeDjangoPath(path)
+	return normalized
 }

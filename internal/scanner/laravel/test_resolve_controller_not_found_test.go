@@ -5,7 +5,7 @@ package laravel
 import "testing"
 
 func TestResolveController_NotFound(t *testing.T) {
-	if resolveController(t.TempDir(), "Missing", map[string]*fileInfo{}) != nil {
+	if resolveController(t.TempDir(), "Missing", nil, map[string]*fileInfo{}) != nil {
 		t.Fatal("expected nil")
 	}
 }

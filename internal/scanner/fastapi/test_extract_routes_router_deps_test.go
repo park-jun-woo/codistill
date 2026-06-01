@@ -22,9 +22,9 @@ async def create_sneaker():
 	if err != nil {
 		t.Fatal(err)
 	}
-	prefixes := resolveRouterPrefixes(root, src)
-	routerDeps := resolveRouterDeps(root, src)
-	routes := extractRoutes(root, src, prefixes, routerDeps, "sneakers.py", nil)
+	prefixes := resolveRouterPrefixes(root, src, nil)
+	routerDeps := resolveRouterDeps(root, src, nil)
+	routes := extractRoutes(root, src, prefixes, routerDeps, nil, "sneakers.py", nil)
 
 	if len(routes) != 2 {
 		t.Fatalf("expected 2 routes, got %d", len(routes))

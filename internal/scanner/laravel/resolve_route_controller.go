@@ -6,7 +6,8 @@ func resolveRouteController(absRoot string, ri routeInfo, parsedFiles map[string
 	if ri.controller == "" || ri.action == "" {
 		return nil
 	}
-	controllerFI := resolveController(absRoot, ri.controller, parsedFiles)
+	srcFI := parsedFiles[ri.file]
+	controllerFI := resolveController(absRoot, ri.controller, srcFI, parsedFiles)
 	if controllerFI == nil {
 		return nil
 	}

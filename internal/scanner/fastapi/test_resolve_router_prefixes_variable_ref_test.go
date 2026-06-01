@@ -15,7 +15,7 @@ sneakers_router = APIRouter(prefix=API_STR)
 	if err != nil {
 		t.Fatal(err)
 	}
-	prefixes := resolveRouterPrefixes(root, src)
+	prefixes := resolveRouterPrefixes(root, src, nil)
 	if prefixes["sneakers_router"] != "/api" {
 		t.Fatalf("expected /api for sneakers_router, got %q", prefixes["sneakers_router"])
 	}

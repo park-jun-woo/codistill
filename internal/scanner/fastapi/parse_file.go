@@ -8,7 +8,9 @@ import (
 )
 
 // parseFile parses a single Python file and returns its fileInfo.
-func parseFile(absRoot, absPath string) (*fileInfo, error) {
+// routerSubclassNames is the repo-wide set of APIRouter subclass names used to
+// recognize custom router instantiations across files.
+func parseFile(absRoot, absPath string, routerSubclassNames map[string]bool) (*fileInfo, error) {
 	src, err := os.ReadFile(absPath)
 	if err != nil {
 		return nil, err
@@ -24,8 +26,9 @@ func parseFile(absRoot, absPath string) (*fileInfo, error) {
 		src:        src,
 		root:       root,
 		imports:    extractImports(root, src),
-		prefixes:   resolveRouterPrefixes(root, src),
-		routerDeps: resolveRouterDeps(root, src),
+		prefixes:   resolveRouterPrefixes(root, src, routerSubclassNames),
+		routerDeps: resolveRouterDeps(root, src, routerSubclassNames),
+		hidden:     resolveHiddenRouters(root, src, routerSubclassNames),
 		models:     findAllPydanticModels(root, src),
 	}, nil
 }

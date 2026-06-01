@@ -5,7 +5,7 @@ package laravel
 import "testing"
 
 func TestFindResourceFile_NotFound(t *testing.T) {
-	if findResourceFile(t.TempDir(), "Missing", map[string]*fileInfo{}) != nil {
+	if findResourceFile(t.TempDir(), "Missing", nil, map[string]*fileInfo{}) != nil {
 		t.Fatal("expected nil")
 	}
 }

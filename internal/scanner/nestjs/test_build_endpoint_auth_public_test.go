@@ -12,7 +12,7 @@ func TestBuildEndpoint_AuthPublic(t *testing.T) {
 		handler:   "signIn",
 		authLevel: "public",
 	}
-	result := buildEndpoint("api", false, ci, ep)
+	result := buildEndpoint("api", false, "", ci, ep)
 	if result.AuthLevel != "public" {
 		t.Fatalf("expected AuthLevel=public, got %q", result.AuthLevel)
 	}

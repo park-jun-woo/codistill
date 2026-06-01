@@ -19,5 +19,21 @@ func assignSchemaSection(si *schemaInfo, pair *sitter.Node, src []byte) {
 		si.Params = val
 	case "response":
 		collectResponseSchemas(si, val, src)
+	case "operationId":
+		if val.Type() == "string" {
+			si.OperationID = unquoteTS(nodeText(val, src))
+		}
+	case "summary":
+		if val.Type() == "string" {
+			si.Summary = unquoteTS(nodeText(val, src))
+		}
+	case "description":
+		if val.Type() == "string" {
+			si.Description = unquoteTS(nodeText(val, src))
+		}
+	case "tags":
+		if val.Type() == "array" {
+			si.Tags = collectStringArray(val, src)
+		}
 	}
 }

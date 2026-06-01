@@ -13,5 +13,6 @@ type fileInfo struct {
 	imports    []importInfo
 	prefixes   map[string]string   // router variable -> resolved prefix
 	routerDeps map[string][]string // router variable -> middleware from APIRouter(dependencies=[...])
+	hidden     map[string]bool     // router variable -> true if include_in_schema=False (router/include level)
 	models     map[string][]pydanticField
 }

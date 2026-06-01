@@ -27,12 +27,14 @@ func extractOneRoute(def *sitter.Node, src []byte, bpPrefixes blueprintPrefix, f
 
 	bf := extractBodyFields(funcDef, src)
 
+	var all []routeInfo
 	for _, dec := range decorators {
 		routes := parseFlaskDecorator(dec, src, bpPrefixes, handler, file, line)
-		if len(routes) > 0 {
-			return applyBodyFields(routes, bf)
-		}
+		all = append(all, routes...)
+	}
+	if len(all) == 0 {
+		return nil
 	}
 
-	return nil
+	return applyBodyFields(all, bf)
 }

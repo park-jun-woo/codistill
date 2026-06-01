@@ -18,11 +18,14 @@ func TestParseRouteArg(t *testing.T) {
 	if args == nil {
 		t.Fatal("no arguments")
 	}
-	method, handler := parseRouteArg(args, src)
+	method, handler, pathOverride := parseRouteArg(args, src)
 	if method != "GET" {
 		t.Errorf("method = %q, want GET", method)
 	}
 	if handler != "get_user" {
 		t.Errorf("handler = %q, want get_user", handler)
+	}
+	if pathOverride != "" {
+		t.Errorf("pathOverride = %q, want empty (A-form)", pathOverride)
 	}
 }

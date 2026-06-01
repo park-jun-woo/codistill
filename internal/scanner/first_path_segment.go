@@ -18,6 +18,11 @@ func firstPathSegment(path string) string {
 		if strings.HasPrefix(seg, "{") || strings.HasPrefix(seg, ":") {
 			continue
 		}
+		// Skip unresolved template-literal fragments (`${PREFIX}`) so they do
+		// not pollute the operationId prefix. See Phase145.
+		if strings.HasPrefix(seg, "$") {
+			continue
+		}
 		return seg
 	}
 	return ""

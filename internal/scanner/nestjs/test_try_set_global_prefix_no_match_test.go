@@ -12,7 +12,7 @@ func TestTrySetGlobalPrefix_NoMatch(t *testing.T) {
 	}
 	calls := findAllByType(root, "call_expression")
 	for _, call := range calls {
-		_, ok := trySetGlobalPrefix(call, src)
+		_, ok := trySetGlobalPrefix(call, root, src)
 		if ok {
 			t.Fatal("expected false")
 		}

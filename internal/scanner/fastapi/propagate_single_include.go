@@ -20,19 +20,16 @@ func propagateSingleInclude(fi *fileInfo, inc includeCall, importMap map[string]
 	if srcFI == nil {
 		return false
 	}
-	origVar := findOriginalVarName(inc.childVar, srcFI)
+	origVar := findOriginalVarName(inc.childVar, fi.imports, srcFI)
 	if origVar == "" {
 		return false
 	}
 
-	// 전파 직전 스냅샷에서 원래 로컬 값을 읽는다
-	// (merge + resolveDotted 완료 후, 전파 시작 전의 정확한 값)
-	origPrefixes := origSnapshot[fi.absPath]
-	origLocalParent := origPrefixes[inc.parentVar]
-	origChildAccum := origPrefixes[inc.childVar]
-
-	// extra 기여분 추출: origChildAccum에서 origLocalParent를 제거
-	extraContrib := stripLeadingPath(origChildAccum, origLocalParent)
+	// 이 include 호출 고유의 extra 기여분은 키워드 prefix 자체다.
+	// 스냅샷 strip 재구성은 동일 파일 내 hop 순서에 따라 부모 누적이
+	// 자식에 반영되지 않은 비일관 상태를 만들 수 있어(다단계 체인),
+	// 직접 resolve한 extraPrefix를 쓴다.
+	extraContrib := resolveIfVariable(fi.root, inc.extraPrefix, fi.src)
 
 	// 갱신된 부모 prefix + extra + 소스 파일의 원래 prefix
 	parentPrefix := fi.prefixes[inc.parentVar]

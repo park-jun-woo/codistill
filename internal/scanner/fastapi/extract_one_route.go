@@ -5,17 +5,22 @@ package fastapi
 import sitter "github.com/smacker/go-tree-sitter"
 
 // extractOneRoute extracts route info from a single decorated definition.
-// Returns nil if the definition is not a route handler.
+// Returns nil if the definition is not a route handler, if the route decorator
+// carries include_in_schema=False, or if its router variable is hidden.
 // routerDeps maps router variable names to their constructor-level dependencies.
+// hidden is the set of router variable names hidden from the schema.
 // aliasMap maps type alias names to their Depends function names.
-func extractOneRoute(def *sitter.Node, src []byte, prefixes map[string]string, routerDeps map[string][]string, file string, aliasMap map[string]string) *routeInfo {
+func extractOneRoute(def *sitter.Node, src []byte, prefixes map[string]string, routerDeps map[string][]string, hidden map[string]bool, file string, aliasMap map[string]string) *routeInfo {
 	decorators := childrenOfType(def, "decorator")
 	if len(decorators) == 0 {
 		return nil
 	}
 
-	method, path, routerVar, statusCode, responseModel, responseClass := findRouteDecorator(decorators, src)
+	method, routerVar, da := findRouteDecorator(decorators, src)
 	if method == "" {
+		return nil
+	}
+	if !da.includeInSchema || hidden[routerVar] {
 		return nil
 	}
 
@@ -32,7 +37,7 @@ func extractOneRoute(def *sitter.Node, src []byte, prefixes map[string]string, r
 
 	line := int(funcDef.StartPoint().Row) + 1
 	prefix := prefixes[routerVar]
-	fullPath := combinePath(prefix, path)
+	fullPath := combinePath(prefix, da.path)
 
 	ri := &routeInfo{
 		method:        method,
@@ -40,9 +45,9 @@ func extractOneRoute(def *sitter.Node, src []byte, prefixes map[string]string, r
 		handler:       handler,
 		file:          file,
 		line:          line,
-		statusCode:    statusCode,
-		responseModel: responseModel,
-		responseClass: responseClass,
+		statusCode:    da.statusCode,
+		responseModel: da.responseModel,
+		responseClass: da.responseClass,
 	}
 
 	if rDeps := routerDeps[routerVar]; len(rDeps) > 0 {

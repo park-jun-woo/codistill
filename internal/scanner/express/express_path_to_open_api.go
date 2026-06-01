@@ -6,7 +6,7 @@ import (
 	"regexp"
 )
 
-var colonParamRe = regexp.MustCompile(`:([a-zA-Z_][a-zA-Z0-9_]*)(\([^)]*\))?`)
+var colonParamRe = regexp.MustCompile(`:([a-zA-Z_][a-zA-Z0-9_]*)(\([^)]*\))?\??`)
 
 func expressPathToOpenAPI(path string) string {
 	return colonParamRe.ReplaceAllString(path, "{$1}")

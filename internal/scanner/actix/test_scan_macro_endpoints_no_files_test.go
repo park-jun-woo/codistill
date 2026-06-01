@@ -8,7 +8,7 @@ import (
 )
 
 func TestScanMacroEndpoints_NoFiles(t *testing.T) {
-	eps := scanMacroEndpoints(nil, structIndex{}, map[string][]scanner.Field{}, map[string]*handlerInfo{})
+	eps := scanMacroEndpoints(nil, structIndex{}, map[string][]scanner.Field{}, map[string]*handlerInfo{}, map[string]bool{})
 	if len(eps) != 0 {
 		t.Fatalf("expected no endpoints, got %+v", eps)
 	}

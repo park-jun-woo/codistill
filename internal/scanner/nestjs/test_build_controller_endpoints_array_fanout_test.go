@@ -15,7 +15,7 @@ func TestBuildControllerEndpoints_ArrayFanout(t *testing.T) {
 		},
 		absFile: "/src/x.controller.ts",
 	}
-	eps, _ := buildControllerEndpoints("", false, cwf, "", 0)
+	eps, _ := buildControllerEndpoints("", false, "", cwf, "", 0)
 	if len(eps) != 3 {
 		t.Fatalf("expected 3 endpoints after fan-out, got %d", len(eps))
 	}

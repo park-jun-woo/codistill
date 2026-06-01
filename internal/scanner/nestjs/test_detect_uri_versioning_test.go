@@ -7,7 +7,7 @@ import "testing"
 func TestDetectURIVersioning(t *testing.T) {
 	dir := t.TempDir()
 	writeFile(t, dir, "src/main.ts", `app.enableVersioning({ type: VersioningType.URI });`)
-	if !detectURIVersioning(dir) {
+	if enabled, _ := detectURIVersioning(dir); !enabled {
 		t.Fatal("expected URI versioning detected")
 	}
 }

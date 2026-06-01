@@ -23,15 +23,19 @@ func Scan(root string) (*scanner.ScanResult, error) {
 		return nil, fmt.Errorf("resolving path: %w", err)
 	}
 
-	phpFiles, err := findPHPFiles(absRoot)
+	// Stage 1: parse only route-source files (routes/**, providers,
+	// *ServiceProvider.php, **/Routes/**). Controllers/FormRequests/Resources
+	// are parsed lazily on demand in stage 2 (buildEndpoints), so unrelated PHP
+	// files in large apps are never parsed up front.
+	routeSrcFiles, err := findRouteSourceFiles(absRoot)
 	if err != nil {
-		return nil, fmt.Errorf("finding php files: %w", err)
+		return nil, fmt.Errorf("finding route source files: %w", err)
 	}
-	if len(phpFiles) == 0 {
+	if len(routeSrcFiles) == 0 {
 		return &scanner.ScanResult{}, nil
 	}
 
-	parsedFiles := parseAllPHPFiles(absRoot, phpFiles)
+	parsedFiles := parseAllPHPFiles(absRoot, routeSrcFiles)
 	if len(parsedFiles) == 0 {
 		return &scanner.ScanResult{}, nil
 	}

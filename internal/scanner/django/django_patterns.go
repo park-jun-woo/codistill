@@ -2,14 +2,6 @@
 //ff:what Django + DRF 패턴 상수 및 ViewSet 매핑 타입 정의
 package django
 
-import "regexp"
-
-// djangoParamRe matches Django URL pattern variables: <name>, <int:pk>, <str:slug>, <uuid:id>, <slug:slug>.
-var djangoParamRe = regexp.MustCompile(`<(?:([a-zA-Z_]+):)?([a-zA-Z_][a-zA-Z0-9_]*)>`)
-
-// djangoRePathNamedRe matches re_path() named regex groups: (?P<name>...) capturing the name.
-var djangoRePathNamedRe = regexp.MustCompile(`\(\?P<([a-zA-Z_][a-zA-Z0-9_]*)>[^)]*\)`)
-
 // skipDirs are directory names to skip when walking Python files.
 var skipDirs = map[string]bool{
 	"venv":          true,

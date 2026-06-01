@@ -5,6 +5,7 @@ package scanner
 func processDuplicateGroup(id string, indices []int, endpoints []Endpoint, result map[int]string, seen map[string]bool) {
 	for _, idx := range indices {
 		prefixed := prefixedOperationID(endpoints[idx], id)
+		prefixed = sanitizeOperationID(endpoints[idx], prefixed)
 		prefixed = resolveSecondaryDuplicate(prefixed, seen)
 		result[idx] = prefixed
 		seen[prefixed] = true

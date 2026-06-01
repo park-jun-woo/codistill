@@ -10,6 +10,7 @@ func extractBuilderRoutes(fi *fileInfo, handlerFuncs map[string]*handlerInfo) []
 	var routes []builderRoute
 	walkNodes(fi.root, func(n *sitter.Node) {
 		collectTopLevelServiceCall(n, fi, &routes, handlerFuncs)
+		collectTopLevelRouteCall(n, fi, &routes)
 	})
 	return deduplicateBuilderRoutes(routes)
 }

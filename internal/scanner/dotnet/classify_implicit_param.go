@@ -5,6 +5,7 @@ package dotnet
 import "github.com/park-jun-woo/codistill/internal/scanner"
 
 func classifyImplicitParam(typeName, paramName string, ep *endpointInfo) {
+	typeName, _ = stripNullable(typeName)
 	if isPathParam(paramName, ep.path) {
 		ep.params = append(ep.params, scanner.Param{
 			Name: paramName,

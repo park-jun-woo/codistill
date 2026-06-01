@@ -6,7 +6,7 @@ import "testing"
 
 func TestFindFormRequestFile_NotFound(t *testing.T) {
 	dir := t.TempDir()
-	if findFormRequestFile(dir, "Missing", map[string]*fileInfo{}) != nil {
+	if findFormRequestFile(dir, "Missing", nil, map[string]*fileInfo{}) != nil {
 		t.Fatal("expected nil")
 	}
 }

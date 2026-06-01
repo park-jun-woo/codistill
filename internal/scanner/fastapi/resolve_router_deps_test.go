@@ -16,7 +16,7 @@ public = APIRouter(prefix="/public")
 	if err != nil {
 		t.Fatal(err)
 	}
-	deps := resolveRouterDeps(root, src)
+	deps := resolveRouterDeps(root, src, nil)
 
 	// router should have verify_token
 	if len(deps["router"]) != 1 {

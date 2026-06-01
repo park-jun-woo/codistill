@@ -19,4 +19,8 @@ struct UpdateRequest {
 async fn update(body: web::Json<UpdateRequest>) -> HttpResponse {
     HttpResponse::Ok().json(result)
 }
+
+pub fn config(cfg: &mut web::ServiceConfig) {
+    cfg.service(update);
+}
 `

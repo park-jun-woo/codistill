@@ -10,6 +10,7 @@ func collectURLs(files []fileInfo) map[string][]urlEntry {
 		if len(entries) == 0 {
 			continue
 		}
+		qualifyRouterVars(entries, fi.module)
 		byModule[fi.module] = append(byModule[fi.module], entries...)
 	}
 	return byModule

@@ -17,6 +17,9 @@ func TestPathTemplateNames(t *testing.T) {
 		{"/static/{wildcard}", []string{"wildcard"}},
 		{"/health", nil},
 		{"/a/{}/b", nil},
+		// Phase145: `${PREFIX}` interpolation leftover is not a path param.
+		{"/${PREFIX_APIV3_DATA}/{modelId}/records", []string{"modelId"}},
+		{"/${PREFIX}", nil},
 	}
 	for _, c := range cases {
 		if got := pathTemplateNames(c.in); !reflect.DeepEqual(got, c.want) {

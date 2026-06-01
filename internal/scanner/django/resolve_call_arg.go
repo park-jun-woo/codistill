@@ -15,10 +15,7 @@ func resolveCallArg(entry *urlEntry, arg *sitter.Node, src []byte) {
 
 	if callFunc != nil && nodeText(callFunc, src) == "include" {
 		entry.isInclude = true
-		innerArgs := findChildByType(arg, "argument_list")
-		if innerArgs != nil {
-			entry.includeModule = firstStringArg(innerArgs, src)
-		}
+		resolveIncludeArg(entry, findChildByType(arg, "argument_list"), src)
 		return
 	}
 
@@ -33,7 +30,17 @@ func resolveCallArg(entry *urlEntry, arg *sitter.Node, src []byte) {
 		return
 	}
 
-	if callFunc != nil {
-		entry.viewName = nodeText(callFunc, src)
+	if callFunc == nil {
+		return
 	}
+	name := nodeText(callFunc, src)
+	// A known view-wrapping decorator (staff_member_required(view), ...) hides
+	// the real view in its first positional argument. Unwrap it so the wrapper
+	// name never leaks into the view name (and thus the operationId). Nested
+	// wrappers and inner X.as_view(...) calls are handled by re-resolving the
+	// inner argument as a second-position view argument.
+	if isViewWrapper(name) && tryUnwrapViewWrapper(entry, arg, src) {
+		return
+	}
+	entry.viewName = name
 }

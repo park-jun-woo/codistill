@@ -9,10 +9,16 @@ import (
 )
 
 // buildEndpoint creates a scanner.Endpoint from controller + endpoint info.
-func buildEndpoint(globalPrefix string, uriVersioning bool, ci controllerInfo, ep endpointInfo) scanner.Endpoint {
+func buildEndpoint(globalPrefix string, uriVersioning bool, defaultVersion string, ci controllerInfo, ep endpointInfo) scanner.Endpoint {
 	versionPrefix := ""
-	if uriVersioning && ci.version != "" {
-		versionPrefix = "v" + ci.version
+	// Controller-level version wins; otherwise fall back to the app-level
+	// defaultVersion from enableVersioning({ defaultVersion }).
+	effectiveVersion := ci.version
+	if effectiveVersion == "" {
+		effectiveVersion = defaultVersion
+	}
+	if uriVersioning && effectiveVersion != "" {
+		versionPrefix = "v" + effectiveVersion
 	}
 	fullPath := joinParts(globalPrefix, versionPrefix, ci.prefix, ep.path)
 	fullPath = pathToOpenAPI(fullPath)

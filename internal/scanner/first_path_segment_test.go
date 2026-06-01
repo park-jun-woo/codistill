@@ -19,6 +19,9 @@ func TestFirstPathSegment(t *testing.T) {
 		{"/api", ""},
 		{"/api/v1", ""},
 		{"/admin/buildings/:buildingId", "admin"},
+		// Phase145: skip unresolved `${PREFIX}` template fragment.
+		{"/${PREFIX}/{modelId}/records", "records"},
+		{"/${PREFIX}", ""},
 	}
 	for _, tt := range tests {
 		t.Run(tt.path, func(t *testing.T) {

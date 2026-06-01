@@ -8,11 +8,11 @@ import sitter "github.com/smacker/go-tree-sitter"
 //
 //	app = FastAPI()
 //	router = APIRouter(prefix="/users")
-func findRouterAssignments(root *sitter.Node, src []byte) []routerInfo {
+func findRouterAssignments(root *sitter.Node, src []byte, routerSubclassNames map[string]bool) []routerInfo {
 	var routers []routerInfo
 	assignments := findAllByType(root, "assignment")
 	for _, assign := range assignments {
-		ri := tryParseRouterAssignment(assign, src)
+		ri := tryParseRouterAssignment(assign, src, routerSubclassNames)
 		if ri != nil {
 			routers = append(routers, *ri)
 		}

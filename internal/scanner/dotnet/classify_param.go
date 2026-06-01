@@ -19,7 +19,8 @@ func classifyParam(param *sitter.Node, src []byte, ep *endpointInfo) {
 
 	switch {
 	case hasAttribute(param, src, AttrFromBody):
-		ep.bodyType = typeName
+		base, _ := stripNullable(typeName)
+		ep.bodyType = base
 		ep.bodyVarName = paramName
 	case hasAttribute(param, src, AttrFromQuery):
 		p := scanner.Param{Name: paramName, Type: csharpTypeToOpenAPIType(typeName)}

@@ -15,7 +15,8 @@ func parseRegisterCall(callNode *sitter.Node, fi fileInfo) *routerRegistration {
 		return nil
 	}
 	text := nodeText(attrNode, fi.src)
-	if !strings.HasSuffix(text, ".register") {
+	routerVar, ok := registerRouterVar(text)
+	if !ok {
 		return nil
 	}
 	args := findChildByType(callNode, "argument_list")
@@ -34,5 +35,7 @@ func parseRegisterCall(callNode *sitter.Node, fi fileInfo) *routerRegistration {
 		prefix:      strings.TrimRight(prefix, "/"),
 		viewsetName: nodeText(posArgs[1], fi.src),
 		basename:    extractKeywordArg(args, "basename", fi.src),
+		routerVar:   routerVar,
+		module:      fi.module,
 	}
 }

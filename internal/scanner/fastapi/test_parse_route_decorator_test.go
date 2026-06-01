@@ -14,17 +14,17 @@ func TestParseRouteDecorator(t *testing.T) {
 	if len(decs) == 0 {
 		t.Fatal("no decorator")
 	}
-	method, path, routerVar, status, _, _ := parseRouteDecorator(decs[0], src)
+	method, routerVar, da := parseRouteDecorator(decs[0], src)
 	if method != "POST" {
 		t.Fatalf("method: got %q", method)
 	}
-	if path != "/items" {
-		t.Fatalf("path: got %q", path)
+	if da.path != "/items" {
+		t.Fatalf("path: got %q", da.path)
 	}
 	if routerVar != "app" {
 		t.Fatalf("routerVar: got %q", routerVar)
 	}
-	if status != 201 {
-		t.Fatalf("status: got %d", status)
+	if da.statusCode != 201 {
+		t.Fatalf("status: got %d", da.statusCode)
 	}
 }

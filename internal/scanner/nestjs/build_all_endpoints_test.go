@@ -5,7 +5,7 @@ package nestjs
 import "testing"
 
 func TestBuildAllEndpoints_Empty(t *testing.T) {
-	eps, reqs := buildAllEndpoints("", false, nil, "")
+	eps, reqs := buildAllEndpoints("", false, "", nil, "")
 	if len(eps) != 0 || len(reqs) != 0 {
 		t.Fatal("expected empty results")
 	}

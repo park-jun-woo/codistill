@@ -8,7 +8,7 @@ import (
 	"github.com/park-jun-woo/codistill/internal/scanner"
 )
 
-func tryResourceResponse(absRoot string, retNode *sitter.Node, src []byte, parsedFiles map[string]*fileInfo) *scanner.Response {
+func tryResourceResponse(absRoot string, retNode *sitter.Node, src []byte, srcFI *fileInfo, parsedFiles map[string]*fileInfo) *scanner.Response {
 	for _, oc := range findAllByType(retNode, "object_creation_expression") {
 		resName := resourceTypeName(oc, src)
 		if resName == "" {
@@ -18,7 +18,7 @@ func tryResourceResponse(absRoot string, retNode *sitter.Node, src []byte, parse
 			Status:   "200",
 			Kind:     "json",
 			TypeName: resName,
-			Fields:   extractResourceFields(absRoot, resName, parsedFiles),
+			Fields:   extractResourceFields(absRoot, resName, srcFI, parsedFiles),
 		}
 	}
 	return nil

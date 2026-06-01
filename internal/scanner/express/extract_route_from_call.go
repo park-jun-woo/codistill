@@ -10,10 +10,10 @@ func extractRouteFromCall(call *sitter.Node, src []byte, routers map[string]bool
 		markChainProcessed(call, processed)
 		return chain
 	}
-	ri := extractOneRoute(call, src, routers)
-	if ri != nil {
+	routes := extractRoutesFromCall(call, src, routers)
+	if len(routes) > 0 {
 		processed[uintptr(call.StartByte())] = true
-		return []routeInfo{*ri}
+		return routes
 	}
 	return nil
 }

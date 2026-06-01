@@ -11,7 +11,7 @@ import (
 // buildViewSetEndpoints builds endpoints for a router-registered ViewSet.
 func buildViewSetEndpoints(reg routerRegistration, vs *viewsetInfo, serializers map[string]serializerInfo) []scanner.Endpoint {
 	prefix := "/" + strings.TrimLeft(reg.prefix, "/")
-	methods := resolveViewSetMethods(vs.parents)
+	methods := viewsetCRUDMethods(vs)
 
 	var endpoints []scanner.Endpoint
 	for _, am := range methods {

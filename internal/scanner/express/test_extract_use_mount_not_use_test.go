@@ -6,7 +6,7 @@ import "testing"
 
 func TestExtractUseMount_NotUse(t *testing.T) {
 	fi := mustParse(t, []byte(`app.get('/api', r);`))
-	if m := extractUseMount(firstCallExpr(t, fi), fi.Src, map[string]bool{"app": true}, nil); m != nil {
+	if m := extractUseMount(firstCallExpr(t, fi), fi, map[string]bool{"app": true}, nil, "", nil); m != nil {
 		t.Fatalf("got %+v", m)
 	}
 }

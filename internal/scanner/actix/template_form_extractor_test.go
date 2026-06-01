@@ -15,4 +15,8 @@ struct LoginForm {
 async fn login(form: web::Form<LoginForm>) -> HttpResponse {
     HttpResponse::Ok().json(result)
 }
+
+pub fn config(cfg: &mut web::ServiceConfig) {
+    cfg.service(login);
+}
 `

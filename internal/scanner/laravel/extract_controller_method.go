@@ -9,8 +9,9 @@ func extractControllerMethod(fi *fileInfo, methodName string) *controllerMethod 
 		return nil
 	}
 	cm := &controllerMethod{
-		name: methodName,
-		src:  fi.src,
+		name:  methodName,
+		src:   fi.src,
+		srcFI: fi,
 	}
 	if formalParams := findChildByType(method, "formal_parameters"); formalParams != nil {
 		cm.params = extractMethodParams(formalParams, fi.src)

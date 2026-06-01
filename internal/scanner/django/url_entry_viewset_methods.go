@@ -10,7 +10,7 @@ import "sort"
 // ViewSet's parent mixins.
 func urlEntryViewSetMethods(entry urlEntry, vs *viewsetInfo) []actionMethod {
 	if len(entry.methodActions) == 0 {
-		return resolveViewSetMethods(vs.parents)
+		return viewsetCRUDMethods(vs)
 	}
 	httpMethods := make([]string, 0, len(entry.methodActions))
 	for m := range entry.methodActions {

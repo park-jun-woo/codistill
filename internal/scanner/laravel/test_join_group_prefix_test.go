@@ -14,4 +14,13 @@ func TestJoinGroupPrefix(t *testing.T) {
 	if joinGroupPrefix("api", "v1") != "api/v1" {
 		t.Fatal("both")
 	}
+	if joinGroupPrefix("api", "/v1") != "api/v1" {
+		t.Fatal("leading slash inner")
+	}
+	if joinGroupPrefix("api", "/currencies/") != "api/currencies" {
+		t.Fatal("both-end slash inner")
+	}
+	if joinGroupPrefix("", "/v1") != "v1" {
+		t.Fatal("empty outer leading slash")
+	}
 }

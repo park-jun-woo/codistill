@@ -19,7 +19,7 @@ func detectGlobalPrefixInFile(path string) (string, bool) {
 	calls := findAllByType(astRoot, "call_expression")
 	found := false
 	for _, call := range calls {
-		if prefix, ok := trySetGlobalPrefix(call, src); ok {
+		if prefix, ok := trySetGlobalPrefix(call, astRoot, src); ok {
 			return prefix, true
 		}
 		if hasSetGlobalPrefix(call, src) {

@@ -38,8 +38,8 @@ func parseFlaskDecorator(dec *sitter.Node, src []byte, bpPrefixes blueprintPrefi
 	// Extract the path from the first string argument
 	rawPath := firstStringArg(args, src)
 
-	// Resolve blueprint prefix
-	prefix := bpPrefixes[routerVar]
+	// Resolve blueprint prefix (file-scoped to disambiguate same-named "bp" vars)
+	prefix := lookupBlueprintPrefix(bpPrefixes, file, routerVar)
 	fullPath := combinePath(prefix, rawPath)
 
 	// Extract URL params from the full path

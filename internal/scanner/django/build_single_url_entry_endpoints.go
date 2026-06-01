@@ -5,7 +5,13 @@ package django
 import "github.com/park-jun-woo/codistill/internal/scanner"
 
 // buildSingleURLEntryEndpoints builds endpoints for a single URL entry.
-func buildSingleURLEntryEndpoints(entry urlEntry, viewsets []viewsetInfo, apiviews []apiviewInfo, funcViews []funcViewInfo, serializers map[string]serializerInfo) []scanner.Endpoint {
+func buildSingleURLEntryEndpoints(entry urlEntry, viewsets []viewsetInfo, apiviews []apiviewInfo, funcViews []funcViewInfo, serializers map[string]serializerInfo, routerRegs map[string][]routerRegistration) []scanner.Endpoint {
+	if entry.includeRouterVar != "" {
+		return buildRouterRefEndpoints(entry, viewsets, serializers, routerRegs)
+	}
+	if len(entry.methodViews) > 0 {
+		return buildRestPathEndpoints(entry)
+	}
 	viewName := resolveViewName(entry.viewName)
 	if viewName == "" {
 		return nil

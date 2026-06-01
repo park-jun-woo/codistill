@@ -12,5 +12,6 @@ func extractParamName(part string) string {
 	if idx := strings.Index(name, "("); idx >= 0 {
 		name = name[:idx]
 	}
+	name = strings.TrimSuffix(name, "?")
 	return name
 }

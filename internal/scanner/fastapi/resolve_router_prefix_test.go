@@ -17,7 +17,7 @@ app.include_router(router)
 	if err != nil {
 		t.Fatal(err)
 	}
-	prefixes := resolveRouterPrefixes(root, src)
+	prefixes := resolveRouterPrefixes(root, src, nil)
 	if prefixes["app"] != "" {
 		t.Fatalf("expected empty prefix for app, got %q", prefixes["app"])
 	}

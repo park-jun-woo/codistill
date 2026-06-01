@@ -23,7 +23,7 @@ class UserResource extends JsonResource {
 }
 `)
 	parsedFiles := make(map[string]*fileInfo)
-	fields := extractResourceFields(dir, "UserResource", parsedFiles)
+	fields := extractResourceFields(dir, "UserResource", nil, parsedFiles)
 	if len(fields) != 4 {
 		t.Fatalf("expected 4 fields, got %d", len(fields))
 	}

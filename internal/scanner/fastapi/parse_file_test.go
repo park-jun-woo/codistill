@@ -13,7 +13,7 @@ func TestParseFile(t *testing.T) {
 	f := filepath.Join(dir, "main.py")
 	os.WriteFile(f, []byte("from .models import User\nx = 1\n"), 0o644)
 
-	fi, err := parseFile(dir, f)
+	fi, err := parseFile(dir, f, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -25,7 +25,7 @@ func TestParseFile(t *testing.T) {
 	}
 
 	// non-existent file
-	_, err = parseFile(dir, filepath.Join(dir, "nonexistent.py"))
+	_, err = parseFile(dir, filepath.Join(dir, "nonexistent.py"), nil)
 	if err == nil {
 		t.Fatal("expected error for non-existent file")
 	}

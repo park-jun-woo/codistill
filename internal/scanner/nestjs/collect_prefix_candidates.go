@@ -1,28 +1,25 @@
-//ff:func feature=scan type=extract control=iteration dimension=1 topic=nestjs
-//ff:what main.ts를 우선 배치하고 src/ 내 나머지 .ts 파일을 후순위로 모아 반환한다
+//ff:func feature=scan type=extract control=sequence topic=nestjs
+//ff:what main.ts 우선, src/** 재귀 + 워크스페이스 패키지에서 prefix 설정 파일을 모은다
 package nestjs
 
 import (
-	"os"
 	"path/filepath"
-	"strings"
 )
 
-// collectPrefixCandidates returns src/*.ts paths with main.ts first.
-// Non-.ts entries and directories are skipped.
+// collectPrefixCandidates returns .ts file paths that may contain a
+// setGlobalPrefix/enableVersioning call, with src/main.ts first. It recurses
+// src/** (and monorepo packages/*/src/**) using a cheap text pre-filter
+// (containsPrefixCall) so only bootstrap files are AST-parsed, then appends
+// cross-package candidates from workspace packages imported by the entry file
+// (resolveWorkspacePrefixFiles), e.g. main.ts importing { bootstrap } from
+// '@gauzy/core'. Duplicates are removed while preserving first-seen order.
 func collectPrefixCandidates(root string) []string {
 	mainPath := filepath.Join(root, "src", "main.ts")
 	candidates := []string{mainPath}
 
-	entries, err := os.ReadDir(filepath.Join(root, "src"))
-	if err != nil {
-		return candidates
-	}
-	for _, e := range entries {
-		if e.IsDir() || !strings.HasSuffix(e.Name(), ".ts") || e.Name() == "main.ts" {
-			continue
-		}
-		candidates = append(candidates, filepath.Join(root, "src", e.Name()))
-	}
-	return candidates
+	candidates = append(candidates, collectRecursivePrefixFiles(filepath.Join(root, "src"))...)
+	candidates = append(candidates, collectMonorepoPrefixFiles(root)...)
+	candidates = append(candidates, resolveWorkspacePrefixFiles(root)...)
+
+	return dedupePaths(candidates)
 }

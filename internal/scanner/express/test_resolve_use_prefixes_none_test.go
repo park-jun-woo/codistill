@@ -6,7 +6,7 @@ import "testing"
 
 func TestResolveUsePrefixes_None(t *testing.T) {
 	fi := mustParse(t, []byte(`doStuff();`))
-	mounts := resolveUsePrefixes(fi, map[string]bool{"app": true}, nil)
+	mounts := resolveUsePrefixes(fi, map[string]bool{"app": true}, nil, "", nil)
 	if len(mounts) != 0 {
 		t.Fatalf("expected none, got %+v", mounts)
 	}

@@ -22,4 +22,8 @@ async fn get_url() -> HttpResponse {
     let resp = CreatedURL{shorturl: a, longurl: b, hits: c};
     HttpResponse::Ok().json(resp)
 }
+
+pub fn config(cfg: &mut web::ServiceConfig) {
+    cfg.service(create_url).service(get_url);
+}
 `

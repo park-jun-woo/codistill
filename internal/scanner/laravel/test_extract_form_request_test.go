@@ -23,7 +23,7 @@ class StoreUserRequest extends FormRequest {
 }
 `)
 	parsedFiles := make(map[string]*fileInfo)
-	fields := extractFormRequest(dir, "StoreUserRequest", parsedFiles)
+	fields := extractFormRequest(dir, "StoreUserRequest", nil, parsedFiles)
 	if len(fields) != 4 {
 		t.Fatalf("expected 4 fields, got %d", len(fields))
 	}

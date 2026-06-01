@@ -18,12 +18,12 @@ async def read_user_me(current_user: CurrentUser):
 	if err != nil {
 		t.Fatal(err)
 	}
-	prefixes := resolveRouterPrefixes(root, src)
+	prefixes := resolveRouterPrefixes(root, src, nil)
 	aliasMap := map[string]string{
 		"CurrentUser": "get_current_user",
 		"SessionDep":  "get_db",
 	}
-	routes := extractRoutes(root, src, prefixes, nil, "users.py", aliasMap)
+	routes := extractRoutes(root, src, prefixes, nil, nil, "users.py", aliasMap)
 
 	if len(routes) != 1 {
 		t.Fatalf("expected 1 route, got %d", len(routes))

@@ -7,7 +7,7 @@ import "testing"
 func TestBuildEndpoint_WithBody(t *testing.T) {
 	ci := controllerInfo{prefix: "users"}
 	ep := endpointInfo{method: "POST", handler: "create", bodyType: "CreateUserDto", statusCode: 201}
-	result := buildEndpoint("", false, ci, ep)
+	result := buildEndpoint("", false, "", ci, ep)
 	if result.Request == nil || result.Request.Body == nil {
 		t.Fatal("expected request body")
 	}

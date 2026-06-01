@@ -13,7 +13,7 @@ func TestBuildEndpoint_WithRoles(t *testing.T) {
 		middleware: []string{"JwtAuthGuard", "RolesGuard"},
 		roles:      []string{"Role.premium"},
 	}
-	result := buildEndpoint("api", false, ci, ep)
+	result := buildEndpoint("api", false, "", ci, ep)
 	if len(result.Roles) != 1 || result.Roles[0] != "Role.premium" {
 		t.Fatalf("expected Roles=[Role.premium], got %v", result.Roles)
 	}

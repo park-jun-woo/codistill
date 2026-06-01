@@ -1,13 +1,20 @@
 //ff:func feature=scan type=extract control=iteration dimension=1 topic=laravel
-//ff:what FormRequest 클래스를 담은 파일을 파싱 파일/PSR-4 경로에서 찾는다
+//ff:what FormRequest 클래스를 담은 파일을 캐시/PSR-4/하드코딩 경로에서 찾는다
 package laravel
 
 // findFormRequestFile locates the file containing the FormRequest class.
-func findFormRequestFile(absRoot, className string, parsedFiles map[string]*fileInfo) *fileInfo {
+// Resolution order mirrors resolveController: parse cache, then PSR-4 (the
+// controller file's `use` import + composer psr-4), then the conventional
+// app/Http/Requests hardcoded candidate. srcFI is the controller file naming
+// the request type; it may be nil (PSR-4 step skipped).
+func findFormRequestFile(absRoot, className string, srcFI *fileInfo, parsedFiles map[string]*fileInfo) *fileInfo {
 	for _, fi := range parsedFiles {
 		if classMatches(fi, className) {
 			return fi
 		}
+	}
+	if fi := resolveClassViaPSR4(absRoot, className, srcFI, parsedFiles); fi != nil {
+		return fi
 	}
 	candidates := []string{
 		absRoot + "/app/Http/Requests/" + className + ".php",

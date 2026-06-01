@@ -17,7 +17,7 @@ func TestBuildControllerEndpoints_WithPathParam(t *testing.T) {
 		},
 		absFile: "/src/users.controller.ts",
 	}
-	eps, _ := buildControllerEndpoints("", false, cwf, "", 0)
+	eps, _ := buildControllerEndpoints("", false, "", cwf, "", 0)
 	if len(eps) != 1 {
 		t.Fatalf("expected 1, got %d", len(eps))
 	}

@@ -7,7 +7,7 @@ import "testing"
 func TestResolveController_Path(t *testing.T) {
 	dir := t.TempDir()
 	writeFile(t, dir, "app/Http/Controllers/Api/PostController.php", `<?php class PostController {}`)
-	if resolveController(dir, "PostController", map[string]*fileInfo{}) == nil {
+	if resolveController(dir, "PostController", nil, map[string]*fileInfo{}) == nil {
 		t.Fatal("expected via Api path")
 	}
 }

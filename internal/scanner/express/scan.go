@@ -23,5 +23,17 @@ func Scan(root string) (*scanner.ScanResult, error) {
 	}
 	ctx := scanPass1(tsFiles, absRoot)
 	endpoints := scanPass2(ctx, absRoot)
+	// 데코레이터 라우팅(@RestController + @Get/@Post 등, @n8n/decorators 스타일)을
+	// 별도 패스로 추출해 raw express 결과와 (method,path) 기준 합집합으로 반환한다.
+	decoratorEndpoints := scanDecoratorPass(ctx, absRoot)
+	endpoints = mergeDedupEndpoints(endpoints, decoratorEndpoints)
+	// Medusa v2 파일기반 라우팅(src/api/**/route.ts + export const VERB)을 별도
+	// 패스로 추출해 (method,path) 기준 합집합으로 반환한다.
+	filebasedEndpoints := scanFilebasedPass(ctx, absRoot)
+	endpoints = mergeDedupEndpoints(endpoints, filebasedEndpoints)
+	// 커스텀 Controller 베이스 클래스(Unleash 스타일)의 this.route({...}) /
+	// this.<method>("...") 라우트 등록을 별도 패스로 추출해 합집합으로 반환한다.
+	controllerEndpoints := scanControllerPass(ctx, absRoot)
+	endpoints = mergeDedupEndpoints(endpoints, controllerEndpoints)
 	return &scanner.ScanResult{Endpoints: endpoints}, nil
 }

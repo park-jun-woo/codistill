@@ -16,6 +16,7 @@ type endpointInfo struct {
 	headers       []scanner.Param
 	bodyType      string
 	bodyVarName   string
+	bodyIsArray   bool
 	formType      string
 	formParams    []scanner.Param
 	files         []scanner.Param

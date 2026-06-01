@@ -7,7 +7,7 @@ import "testing"
 func TestExtractUseMount_NoIdentifierObject(t *testing.T) {
 
 	fi := mustParse(t, []byte(`a.b.use('/x', r);`))
-	if m := extractUseMount(firstCallExpr(t, fi), fi.Src, map[string]bool{"a": true, "b": true}, nil); m != nil {
+	if m := extractUseMount(firstCallExpr(t, fi), fi, map[string]bool{"a": true, "b": true}, nil, "", nil); m != nil {
 		t.Fatalf("got %+v", m)
 	}
 }

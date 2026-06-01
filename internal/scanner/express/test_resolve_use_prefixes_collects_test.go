@@ -6,7 +6,7 @@ import "testing"
 
 func TestResolveUsePrefixes_Collects(t *testing.T) {
 	fi := mustParse(t, []byte(`app.use('/api', userRouter); doStuff();`))
-	mounts := resolveUsePrefixes(fi, map[string]bool{"app": true}, map[string]string{"userRouter": "./u.ts"})
+	mounts := resolveUsePrefixes(fi, map[string]bool{"app": true}, map[string]string{"userRouter": "./u.ts"}, "", nil)
 	if len(mounts) != 1 || mounts[0].Prefix != "/api" || mounts[0].VarName != "userRouter" {
 		t.Fatalf("got %+v", mounts)
 	}

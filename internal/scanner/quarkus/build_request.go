@@ -17,10 +17,16 @@ func buildRequest(ep endpointInfo) *scanner.Request {
 		req.FormFields = ep.formParams
 	}
 	if ep.bodyType != "" {
+		typeName := ep.bodyType
+		if ep.bodyIsArray {
+			// Re-apply the slice marker so the shared schema builder emits
+			// type:array + items:$ref(X) via resolvePrimitiveSchema/bodySchema.
+			typeName += "[]"
+		}
 		req.Body = &scanner.Body{
 			VarName:  ep.bodyVarName,
 			Method:   "JAXRSBody",
-			TypeName: ep.bodyType,
+			TypeName: typeName,
 		}
 	}
 	if !hasContent(req) {

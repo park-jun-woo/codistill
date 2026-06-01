@@ -1,19 +1,14 @@
-//ff:func feature=scan type=extract control=iteration dimension=1 topic=django
-//ff:what Django URL 패턴(path 및 re_path)에서 path parameter를 추출한다
+//ff:func feature=scan type=extract control=sequence topic=django
+//ff:what Django URL 패턴(path 및 re_path)에서 path parameter를 추출한다(무명 캡처그룹은 {paramN})
 package django
 
 // extractURLParams extracts URL variable definitions from a Django URL pattern.
 // e.g. "users/<int:pk>/posts/<slug:slug>" -> [{name:"pk", converter:"int"}, {name:"slug", converter:"slug"}];
-// re_path named groups "(?P<year>[0-9]+)" -> [{name:"year"}].
+// re_path named groups "(?P<year>[0-9]+)" -> [{name:"year"}];
+// unnamed groups "^(\d+)/(.*)" -> [{name:"param1"}, {name:"param2"}].
+// Param names and order match djangoURLToOpenAPI exactly via the shared
+// normalizeDjangoPath pipeline.
 func extractURLParams(path string) []urlParam {
-	var params []urlParam
-	for _, m := range djangoRePathNamedRe.FindAllStringSubmatch(path, -1) {
-		params = append(params, urlParam{name: m[1]})
-	}
-	// Convert named groups to {name} so djangoParamRe does not double-match the inner <name>.
-	rest := djangoRePathNamedRe.ReplaceAllString(path, "{$1}")
-	for _, m := range djangoParamRe.FindAllStringSubmatch(rest, -1) {
-		params = append(params, urlParam{name: m[2], converter: m[1]})
-	}
+	_, params := normalizeDjangoPath(path)
 	return params
 }

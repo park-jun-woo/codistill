@@ -15,6 +15,13 @@ func pathTemplateNames(path string) []string {
 		if close < 0 {
 			break
 		}
+		// Skip `${...}` interpolation leftovers (a `{` immediately preceded by
+		// `$`): an unresolved template fragment like `${PREFIX}` must not be
+		// promoted to a synthetic path parameter. See Phase145.
+		if open > 0 && path[open-1] == '$' {
+			path = path[open+close+1:]
+			continue
+		}
 		name := path[open+1 : open+close]
 		if name != "" {
 			names = append(names, name)

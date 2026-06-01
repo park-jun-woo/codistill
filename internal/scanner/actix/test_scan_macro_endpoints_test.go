@@ -19,7 +19,8 @@ func TestScanMacroEndpoints(t *testing.T) {
 	cache := map[string][]scanner.Field{}
 	handlerFuncs := map[string]*handlerInfo{}
 
-	eps := scanMacroEndpoints(files, sIdx, cache, handlerFuncs)
+	registeredHandlers := collectRegisteredHandlers(files)
+	eps := scanMacroEndpoints(files, sIdx, cache, handlerFuncs, registeredHandlers)
 	if len(eps) != 4 {
 		t.Fatalf("expected 4 macro endpoints, got %d: %+v", len(eps), eps)
 	}

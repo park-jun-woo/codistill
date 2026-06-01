@@ -7,7 +7,7 @@ import sitter "github.com/smacker/go-tree-sitter"
 // parsePathCall parses a path("pattern", view) or path("pattern", include("module")) call.
 func parsePathCall(callNode *sitter.Node, src []byte) *urlEntry {
 	funcName := callFuncName(callNode, src)
-	if funcName != "path" && funcName != "re_path" {
+	if funcName != "path" && funcName != "re_path" && funcName != "rest_path" {
 		return nil
 	}
 
@@ -27,6 +27,11 @@ func parsePathCall(callNode *sitter.Node, src []byte) *urlEntry {
 	}
 
 	entry := &urlEntry{pattern: pattern}
+	// rest_path is a method-keyword routing helper: rest_path("p", GET=v, POST=v2).
+	// The HTTP methods arrive as keyword arguments rather than a single view arg.
+	if funcName == "rest_path" {
+		entry.methodViews = extractMethodKeywordViews(args, src)
+	}
 	if len(posArgs) >= 2 {
 		resolveSecondArg(entry, posArgs[1], src)
 	}

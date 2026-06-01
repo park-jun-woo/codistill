@@ -16,4 +16,8 @@ struct ListParams {
 async fn list_items(query: web::Query<ListParams>) -> HttpResponse {
     HttpResponse::Ok().json(items)
 }
+
+pub fn config(cfg: &mut web::ServiceConfig) {
+    cfg.service(list_items);
+}
 `

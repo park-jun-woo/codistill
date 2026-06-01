@@ -18,8 +18,8 @@ async def admin_list():
 	if err != nil {
 		t.Fatal(err)
 	}
-	prefixes := resolveRouterPrefixes(root, src)
-	routes := extractRoutes(root, src, prefixes, nil, "admin.py", nil)
+	prefixes := resolveRouterPrefixes(root, src, nil)
+	routes := extractRoutes(root, src, prefixes, nil, nil, "admin.py", nil)
 
 	if len(routes) != 1 {
 		t.Fatalf("expected 1 route, got %d", len(routes))

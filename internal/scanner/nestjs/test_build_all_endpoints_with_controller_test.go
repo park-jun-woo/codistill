@@ -17,7 +17,7 @@ export class UsersController {
 	writeFile(t, dir, "src/users.controller.ts", ctrl)
 	files := []string{dir + "/src/users.controller.ts"}
 	controllers := collectControllers(files, dir)
-	eps, _ := buildAllEndpoints("api", false, controllers, dir)
+	eps, _ := buildAllEndpoints("api", false, "", controllers, dir)
 	if len(eps) != 1 {
 		t.Fatalf("expected 1, got %d", len(eps))
 	}

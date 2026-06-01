@@ -14,5 +14,5 @@ func isRouterUseCall(call *sitter.Node, src []byte, routers map[string]bool) boo
 		return false
 	}
 	prop := mem.ChildByFieldName("property")
-	return prop != nil && nodeText(prop, src) == "use"
+	return prop != nil && isMountMethod(nodeText(prop, src))
 }

@@ -9,6 +9,7 @@ func TestExtractParamName(t *testing.T) {
 		{"users", ""},          // no colon prefix
 		{":id", "id"},          // plain param
 		{":id(\\d+)", "id"},    // regex constraint -> strip from "("
+		{":duration?", "duration"}, // optional param -> strip trailing "?"
 	}
 	for _, c := range cases {
 		if got := extractParamName(c.in); got != c.want {

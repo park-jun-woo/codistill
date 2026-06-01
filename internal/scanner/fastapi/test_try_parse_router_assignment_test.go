@@ -13,7 +13,7 @@ func TestTryParseRouterAssignment(t *testing.T) {
 	assigns := findAllByType(root, "assignment")
 	found := 0
 	for _, a := range assigns {
-		ri := tryParseRouterAssignment(a, src)
+		ri := tryParseRouterAssignment(a, src, nil)
 		if ri != nil {
 			found++
 		}

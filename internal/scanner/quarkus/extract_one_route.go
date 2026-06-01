@@ -9,7 +9,7 @@ func extractOneRoute(m *sitter.Node, fi *fileInfo) (endpointInfo, bool) {
 	if !found {
 		return endpointInfo{}, false
 	}
-	path := extractMethodPath(m, fi.src)
+	path := extractMethodPath(m, fi)
 	nameNode := findChildByType(m, "identifier")
 	handler := ""
 	if nameNode != nil {

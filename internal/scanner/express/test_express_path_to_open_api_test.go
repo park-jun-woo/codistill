@@ -14,6 +14,7 @@ func TestExpressPathToOpenAPI(t *testing.T) {
 		{"/users", "/users"},
 		{"/:id", "/{id}"},
 		{"/files/:name(\\d+)", "/files/{name}"},
+		{"/api/badge/:id/avg-response/:duration?", "/api/badge/{id}/avg-response/{duration}"},
 	}
 	for _, tt := range tests {
 		got := expressPathToOpenAPI(tt.input)

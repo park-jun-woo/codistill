@@ -13,8 +13,8 @@ func TestParseRouteArg_NoRoute(t *testing.T) {
 	}
 	call := findCallByFuncSuffix(root, src, ".route")
 	args := findChildByType(call, "arguments")
-	method, handler := parseRouteArg(args, src)
-	if method != "" || handler != "" {
-		t.Fatalf("expected empty, got (%q, %q)", method, handler)
+	method, handler, pathOverride := parseRouteArg(args, src)
+	if method != "" || handler != "" || pathOverride != "" {
+		t.Fatalf("expected empty, got (%q, %q, %q)", method, handler, pathOverride)
 	}
 }

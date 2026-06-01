@@ -17,7 +17,7 @@ app.include_router(router, prefix="/api")
 	if err != nil {
 		t.Fatal(err)
 	}
-	prefixes := resolveRouterPrefixes(root, src)
+	prefixes := resolveRouterPrefixes(root, src, nil)
 	if prefixes["router"] != "/api/v1" {
 		t.Fatalf("expected /api/v1, got %q", prefixes["router"])
 	}

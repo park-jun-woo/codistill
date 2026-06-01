@@ -11,7 +11,7 @@ func resolveChildModuleImport(absRoot, referrerDir, childModule string, imports 
 		if imp.name != childModule {
 			continue
 		}
-		subModule := imp.module + "." + childModule
+		subModule := joinModulePath(imp.module, childModule)
 		resolved := resolveImportPath(referrerDir, subModule)
 		if resolved == "" {
 			resolved = resolveAbsoluteImportPath(absRoot, subModule)

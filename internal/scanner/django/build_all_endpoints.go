@@ -8,14 +8,19 @@ import "github.com/park-jun-woo/codistill/internal/scanner"
 func buildAllEndpoints(files []fileInfo) []scanner.Endpoint {
 	urlEntries := collectURLs(files)
 	routerRegs := extractRouterRegistrations(files)
+	wrappers := collectRegisterWrappers(files)
+	routerRegs = append(routerRegs, extractWrapperRegisterCalls(files, wrappers)...)
 	classes := buildClassIndex(files)
 	viewsets := collectViewSets(files, classes)
 	apiviews := collectAPIViews(files, classes)
 	funcViews := collectFuncViews(files)
 	serializers := extractSerializers(files)
 
+	regsByVar := routerRegsByVar(routerRegs)
+	wired := wiredRouterKeys(urlEntries)
+
 	var endpoints []scanner.Endpoint
-	endpoints = append(endpoints, buildRouterEndpoints(routerRegs, viewsets, serializers)...)
-	endpoints = append(endpoints, buildURLEntryEndpoints(urlEntries, viewsets, apiviews, funcViews, serializers)...)
+	endpoints = append(endpoints, buildRouterEndpoints(unwiredRouterRegs(routerRegs, wired), viewsets, serializers)...)
+	endpoints = append(endpoints, buildURLEntryEndpoints(urlEntries, viewsets, apiviews, funcViews, serializers, regsByVar)...)
 	return endpoints
 }

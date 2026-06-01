@@ -10,7 +10,7 @@ import (
 func extractResponsesFromMethod(absRoot string, cm *controllerMethod, parsedFiles map[string]*fileInfo) []scanner.Response {
 	var responses []scanner.Response
 	for _, retNode := range cm.returnNodes {
-		resp := extractOneResponse(absRoot, retNode, cm.src, parsedFiles)
+		resp := extractOneResponse(absRoot, retNode, cm.src, cm.srcFI, parsedFiles)
 		if resp != nil {
 			responses = append(responses, *resp)
 		}

@@ -6,8 +6,8 @@ import sitter "github.com/smacker/go-tree-sitter"
 
 // resolveRouterDeps builds a map of router variable name -> middleware
 // (dependencies) extracted from APIRouter(dependencies=[...]) constructor calls.
-func resolveRouterDeps(root *sitter.Node, src []byte) map[string][]string {
-	routers := findRouterAssignments(root, src)
+func resolveRouterDeps(root *sitter.Node, src []byte, routerSubclassNames map[string]bool) map[string][]string {
+	routers := findRouterAssignments(root, src, routerSubclassNames)
 	deps := make(map[string][]string)
 	for _, r := range routers {
 		if len(r.middleware) > 0 {

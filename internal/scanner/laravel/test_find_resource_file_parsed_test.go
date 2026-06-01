@@ -7,7 +7,7 @@ import "testing"
 func TestFindResourceFile_Parsed(t *testing.T) {
 	fi := mustParsePHP(t, `<?php class UserResource {}`)
 	parsed := map[string]*fileInfo{"x.php": &fi}
-	if findResourceFile("/root", "UserResource", parsed) == nil {
+	if findResourceFile("/root", "UserResource", nil, parsed) == nil {
 		t.Fatal("expected found")
 	}
 }

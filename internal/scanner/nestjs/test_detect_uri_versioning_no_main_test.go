@@ -5,7 +5,7 @@ package nestjs
 import "testing"
 
 func TestDetectURIVersioning_NoMain(t *testing.T) {
-	if detectURIVersioning(t.TempDir()) {
+	if enabled, _ := detectURIVersioning(t.TempDir()); enabled {
 		t.Fatal("expected false when no main.ts")
 	}
 }

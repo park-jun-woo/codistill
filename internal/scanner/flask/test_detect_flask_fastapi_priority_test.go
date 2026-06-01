@@ -15,8 +15,8 @@ func TestDetectFlask_WithFastAPI(t *testing.T) {
 	os.WriteFile(filepath.Join(dir, "requirements.txt"), []byte("fastapi==0.100.0\nflask==3.0.0\n"), 0o644)
 
 	fw := scanner.DetectFramework(dir)
-	// FastAPI takes priority; should detect as fastapi, not flask
-	if fw == "flask" {
-		t.Errorf("expected fastapi (not flask) when both present, got %q", fw)
+	// FastAPI takes priority; should detect as exactly fastapi, not flask
+	if fw != "fastapi" {
+		t.Errorf("expected fastapi when both present, got %q", fw)
 	}
 }

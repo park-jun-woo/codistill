@@ -5,8 +5,9 @@ package django
 // viewsetInfo holds information about a DRF ViewSet class.
 type viewsetInfo struct {
 	name            string
-	parents         []string // parent class names
-	serializerClass string   // serializer_class attribute value
+	parents         []string       // parent class names
+	methods         []actionMethod // CRUD methods resolved transitively through the class index
+	serializerClass string         // serializer_class attribute value
 	actions         []actionInfo
 	file            string // relative file path
 	line            int

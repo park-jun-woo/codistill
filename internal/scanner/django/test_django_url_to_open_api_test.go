@@ -17,6 +17,14 @@ func TestDjangoURLToOpenAPI(t *testing.T) {
 		{"", ""},
 		{"^articles/(?P<year>[0-9]{4})/$", "articles/{year}/"},
 		{"^users/(?P<slug>[-\\w]+)/$", "users/{slug}/"},
+		// Phase163: anchors removed at every position, unnamed groups, escapes.
+		{"^403-csrf-failure/$", "403-csrf-failure/"},
+		{"/api/^control/dashboard", "/api/control/dashboard"},
+		{"^(\\d+)/(.*)", "{param1}/{param2}"},
+		{"^\\.well-known/jwks.json", ".well-known/jwks.json"},
+		{"^([^/]*)/(\\d*)/edit/$", "{param1}/{param2}/edit/"},
+		{"users/{pk}/", "users/{pk}/"},
+		{"^graphql/$", "graphql/"},
 	}
 
 	for _, tt := range tests {

@@ -15,8 +15,9 @@ func extractImports(root *sitter.Node, src []byte) []importInfo {
 		}
 		names := extractImportNames(stmt, src)
 		for _, name := range names {
-			imports = append(imports, importInfo{name: name, module: module})
+			imports = append(imports, importInfo{name: name, module: module, origName: name})
 		}
+		imports = append(imports, extractAliasImports(stmt, module, src)...)
 	}
 	return imports
 }

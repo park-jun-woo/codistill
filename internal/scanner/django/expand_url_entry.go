@@ -9,6 +9,16 @@ func expandURLEntry(entry urlEntry, prefix string, byModule map[string][]urlEntr
 	if !entry.isInclude {
 		return []urlEntry{{pattern: combined, viewName: entry.viewName, methodActions: entry.methodActions}}
 	}
+	if entry.includeRouterVar != "" {
+		return []urlEntry{{pattern: combined, includeRouterVar: entry.includeRouterVar}}
+	}
+	if len(entry.includeInline) > 0 {
+		var out []urlEntry
+		for _, child := range entry.includeInline {
+			out = append(out, expandURLEntry(child, combined, byModule, visited)...)
+		}
+		return out
+	}
 	mod, ok := resolveIncludeModule(entry.includeModule, byModule)
 	if !ok {
 		return nil

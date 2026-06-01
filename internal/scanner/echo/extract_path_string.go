@@ -21,6 +21,8 @@ func extractPathString(info *types.Info, expr ast.Expr) (string, bool) {
 		if v := resolveExprConst(info, e); v != "" {
 			return v, true
 		}
+	case *ast.CallExpr:
+		return extractCallPath(info, e)
 	}
 	return "", false
 }

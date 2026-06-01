@@ -10,7 +10,7 @@ import (
 func TestBuildEndpoint_Basic(t *testing.T) {
 	ci := controllerInfo{prefix: "users"}
 	ep := endpointInfo{method: "GET", path: ":id", handler: "findOne", params: []scanner.Param{{Name: "id", Type: "string"}}}
-	result := buildEndpoint("api", false, ci, ep)
+	result := buildEndpoint("api", false, "", ci, ep)
 	if result.Method != "GET" {
 		t.Fatalf("expected GET, got %s", result.Method)
 	}

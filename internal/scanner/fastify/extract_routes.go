@@ -8,7 +8,9 @@ func extractRoutes(fi *fileInfo, instances map[string]bool) []routeInfo {
 		ri := extractOneRoute(call, fi.Src, instances)
 		if ri != nil {
 			routes = append(routes, *ri)
+			continue
 		}
+		routes = append(routes, extractObjectRoute(call, fi.Src, instances)...)
 	}
 	return routes
 }

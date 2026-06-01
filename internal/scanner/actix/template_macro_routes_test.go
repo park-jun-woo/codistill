@@ -35,4 +35,11 @@ async fn update_user(
 async fn delete_user(path: web::Path<i64>) -> HttpResponse {
     HttpResponse::NoContent().finish()
 }
+
+pub fn config(cfg: &mut web::ServiceConfig) {
+    cfg.service(get_user)
+        .service(create_user)
+        .service(update_user)
+        .service(delete_user);
+}
 `

@@ -42,5 +42,6 @@ func tryParseIncludeRouter(call *sitter.Node, src []byte) *includeCall {
 		childVar:    childVar,
 		childModule: childModule,
 		extraPrefix: extractKeywordArg(args, "prefix", src),
+		hidden:      keywordIsFalse(args, "include_in_schema", src),
 	}
 }

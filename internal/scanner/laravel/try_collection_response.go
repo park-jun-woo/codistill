@@ -8,7 +8,7 @@ import (
 	"github.com/park-jun-woo/codistill/internal/scanner"
 )
 
-func tryCollectionResponse(absRoot string, retNode *sitter.Node, src []byte, parsedFiles map[string]*fileInfo) *scanner.Response {
+func tryCollectionResponse(absRoot string, retNode *sitter.Node, src []byte, srcFI *fileInfo, parsedFiles map[string]*fileInfo) *scanner.Response {
 	for _, sc := range findAllByType(retNode, "scoped_call_expression") {
 		name := collectionResourceName(sc, src)
 		if name == "" {
@@ -18,7 +18,7 @@ func tryCollectionResponse(absRoot string, retNode *sitter.Node, src []byte, par
 			Status:   "200",
 			Kind:     "json",
 			TypeName: "[]" + name,
-			Fields:   extractResourceFields(absRoot, name, parsedFiles),
+			Fields:   extractResourceFields(absRoot, name, srcFI, parsedFiles),
 		}
 	}
 	return nil

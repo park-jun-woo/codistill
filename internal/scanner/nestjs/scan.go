@@ -27,12 +27,12 @@ func Scan(root string) (*scanner.ScanResult, error) {
 		return &scanner.ScanResult{}, nil
 	}
 	globalPrefix := detectGlobalPrefix(absRoot)
-	uriVersioning := detectURIVersioning(absRoot)
+	uriVersioning, defaultVersion := detectURIVersioning(absRoot)
 	allControllers := collectControllers(tsFiles, absRoot)
 	if len(allControllers) == 0 {
 		fmt.Fprintf(os.Stderr, "warning: nestjs scanner found %d .ts files but no @Controller classes under %s\n", len(tsFiles), absRoot)
 	}
-	endpoints, dtoReqs := buildAllEndpoints(globalPrefix, uriVersioning, allControllers, absRoot)
+	endpoints, dtoReqs := buildAllEndpoints(globalPrefix, uriVersioning, defaultVersion, allControllers, absRoot)
 	schemas := resolveAllDTOs(dtoReqs, endpoints)
 	return &scanner.ScanResult{Endpoints: endpoints, Schemas: schemas}, nil
 }
