@@ -1,0 +1,77 @@
+codistill
+Copyright (c) 2026 park-jun-woo
+
+This product includes software developed by third parties, listed below
+along with their respective licenses. The codistill source code itself is
+licensed under the MIT License (see the LICENSE file).
+
+================================================================================
+Third-party Go modules
+================================================================================
+
+Direct dependencies
+--------------------
+
+github.com/smacker/go-tree-sitter
+    License: MIT
+    Copyright (c) 2019 Maxim Sukharev
+    This module embeds generated C parsers from the tree-sitter project and
+    individual grammar authors (see "Embedded tree-sitter grammars" below).
+
+github.com/spf13/cobra
+    License: Apache License 2.0
+    Copyright the Cobra authors.
+
+golang.org/x/tools
+    License: BSD 3-Clause
+    Copyright 2009 The Go Authors.
+
+gopkg.in/yaml.v3
+    License: MIT and Apache License 2.0 (dual)
+    Copyright 2011-2019 Canonical Ltd. and contributors.
+
+Indirect dependencies
+---------------------
+
+github.com/inconshreveable/mousetrap
+    License: Apache License 2.0
+    Copyright 2022 Alan Shreve (@inconshreveable).
+
+github.com/spf13/pflag
+    License: BSD 3-Clause
+    Copyright (c) 2012 Alex Ogier and The Go Authors.
+
+golang.org/x/mod
+    License: BSD 3-Clause
+    Copyright The Go Authors.
+
+golang.org/x/sync
+    License: BSD 3-Clause
+    Copyright The Go Authors.
+
+================================================================================
+Embedded tree-sitter grammars
+================================================================================
+
+The binary statically links generated C parser code bundled by
+github.com/smacker/go-tree-sitter. These parsers are generated from grammars
+maintained by the tree-sitter project (https://github.com/tree-sitter) and
+individual grammar authors, and are distributed under the MIT License. The
+grammars compiled into codistill cover the following languages:
+
+    C#          (tree-sitter-c-sharp)
+    Java        (tree-sitter-java)
+    PHP         (tree-sitter-php)
+    Python      (tree-sitter-python)
+    Rust        (tree-sitter-rust)
+    TypeScript  (tree-sitter-typescript)
+
+================================================================================
+License texts
+================================================================================
+
+Full license texts for each dependency are distributed with the corresponding
+module source (in the Go module cache or the module's repository) and can be
+obtained from the upstream project listed above. The Apache License 2.0 and
+BSD 3-Clause License are reproduced in standard form by their respective
+projects.
